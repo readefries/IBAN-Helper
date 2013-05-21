@@ -1,14 +1,3 @@
-IBAN Helper
-===========
-
-An Objective-C helper class to validate IBAN accounts.
-Feel happy to countribute!
-
-
-The dataset used to validate the accounts, is from the [UN/CEFACT - TBG Finance site](http://www.tbg5-finance.org/?ibandocs.shtml).
-
-LICENSE
-=======
 Created by Hendrik Bruinsma on 24-09-12.
 Copyright (c) 2012 XS4some. All rights reserved.
 
