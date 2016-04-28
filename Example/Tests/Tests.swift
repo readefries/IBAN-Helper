@@ -1,6 +1,8 @@
 import UIKit
 import XCTest
 
+@testable import RFIBANHelper
+
 class Tests: XCTestCase {
 
   override func setUp()

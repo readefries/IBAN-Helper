@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0720"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "RFIBAN-Helper_Example.app"
-               BlueprintName = "RFIBAN-Helper_Example"
-               ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "RFIBAN-Helper_Tests.xctest"
-               BlueprintName = "RFIBAN-Helper_Tests"
-               ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
+               BlueprintIdentifier = "B142B7A11CD28CEC006E3F2A"
+               BuildableName = "RFIBANHelper.framework"
+               BlueprintName = "RFIBANHelper"
+               ReferencedContainer = "container:RFIBANHelper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,19 +33,19 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "RFIBAN-Helper_Tests.xctest"
-               BlueprintName = "RFIBAN-Helper_Tests"
-               ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
+               BuildableName = "RFIBANHelper_Tests.xctest"
+               BlueprintName = "RFIBANHelper_Tests"
+               ReferencedContainer = "container:RFIBANHelper.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "RFIBAN-Helper_Example.app"
-            BlueprintName = "RFIBAN-Helper_Example"
-            ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
+            BlueprintIdentifier = "B142B7A11CD28CEC006E3F2A"
+            BuildableName = "RFIBANHelper.framework"
+            BlueprintName = "RFIBANHelper"
+            ReferencedContainer = "container:RFIBANHelper.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -75,16 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "RFIBAN-Helper_Example.app"
-            BlueprintName = "RFIBAN-Helper_Example"
-            ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
+            BlueprintIdentifier = "B142B7A11CD28CEC006E3F2A"
+            BuildableName = "RFIBANHelper.framework"
+            BlueprintName = "RFIBANHelper"
+            ReferencedContainer = "container:RFIBANHelper.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -94,16 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "RFIBAN-Helper_Example.app"
-            BlueprintName = "RFIBAN-Helper_Example"
-            ReferencedContainer = "container:RFIBAN-Helper.xcodeproj">
+            BlueprintIdentifier = "B142B7A11CD28CEC006E3F2A"
+            BuildableName = "RFIBANHelper.framework"
+            BlueprintName = "RFIBANHelper"
+            ReferencedContainer = "container:RFIBANHelper.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
