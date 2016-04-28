@@ -1,0 +1,8 @@
+use_frameworks!
+
+
+target 'RFIBAN-Helper_Tests', :exclusive => true do
+  pod 'RFIBAN-Helper', :path => '../'
+
+  
+end
