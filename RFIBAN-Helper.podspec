@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "RFIBAN-Helper"
   s.version          = "1.0.0"
-  s.summary          = "A short description of RFIBAN-Helper."
+  s.summary          = "A little helper to validate if an IBAN is valid (based on the country)."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,16 +18,20 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-                       With this library you can validate IBAN accounts. 
+                       A little helper to validate if an IBAN is valid (based on the country).
+                       
+                       The library will fetch the country code from the IBAN and check the rules from the 
+                       supplied plist for the specific country.
                        
                        DESC
 
-  s.homepage         = "https://github.com/readefries/RFIBAN-Helper"
+  s.homepage         = "https://github.com/readefries/IBAN-Helper"
   s.license          = 'MIT'
   s.author           = { "Hindrik Bruinsma" => "de@readefries.nl" }
-  s.source           = { :git => "https://github.com/readefries/RFIBAN-Helper.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/readefries/IBAN-Helper.git", :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'RFIBAN-Helper/Classes/**/*'
+  s.resources = 'RFIBAN-Helper/Assets/IBANStructure.plist'
 end
