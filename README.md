@@ -1,6 +1,6 @@
 # RFIBAN-Helper
 
-[![CI Status](http://img.shields.io/travis/readefries/RFIBAN-Helper.svg?style=flat)](https://travis-ci.org/readefries/RFIBAN-Helper)
+[![CI Status](http://img.shields.io/travis/readefries/IBAN-Helper.svg?style=flat)](https://travis-ci.org/readefries/IBAN-Helper)
 [![Version](https://img.shields.io/cocoapods/v/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![License](https://img.shields.io/cocoapods/l/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![Platform](https://img.shields.io/cocoapods/p/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
