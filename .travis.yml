@@ -1,5 +1,5 @@
 language: objective-c
-xcode_project: Example/RFIBAN-Helper.xcodeproj
-xcode_scheme: RFIBAN-Helper-Example
+xcode_project: Example/RFIBANHelper.xcodeproj
+xcode_scheme: RFIBANHelper
 osx_image: xcode7.3
 xcode_sdk: iphonesimulator9.3
