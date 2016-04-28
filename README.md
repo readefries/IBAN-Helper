@@ -1,6 +1,8 @@
 # RFIBAN-Helper
 
+<!---
 [![CI Status](http://img.shields.io/travis/readefries/IBAN-Helper.svg?style=flat)](https://travis-ci.org/readefries/IBAN-Helper)
+-->
 [![Version](https://img.shields.io/cocoapods/v/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![License](https://img.shields.io/cocoapods/l/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![Platform](https://img.shields.io/cocoapods/p/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
@@ -13,7 +15,14 @@ The dataset used to validate the accounts, is from the [UN/CEFACT - TBG Finance 
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+```Swift
+  let IBAN = "GB82WEST12345698765432" //remove spaces -> the specs state IBAN should never be stored with spaces
+
+  let result = RFIBANHelper.isValidIBAN(IBAN)
+
+```
+
+
 
 ## Requirements
 
