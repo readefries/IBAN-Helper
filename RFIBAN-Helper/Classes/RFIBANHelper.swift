@@ -18,15 +18,38 @@ public class RFIBANHelper: NSObject {
   static let decimalsAndUppercaseCharacters = "^([A-Z0-9])*$"
   static let decimalsAndLowercaseCharacters = "^([a-z0-9])*$"
   static let characters = "^([A-Za-z])*$"
-  static let decimals = "^(0-9)*$"
-  static let lowercaseCharacters = "^(a-z)*$"
-  static let uppercaseCharacters = "^(A-Z)*$"
+  static let decimals = "^([0-9])*$"
+  static let lowercaseCharacters = "^([a-z])*$"
+  static let uppercaseCharacters = "^([A-Z])*$"
 
   static let startBytesRegex = "^([A-Z]{2}[0-9]{2})$"
 
   public static func createIBAN(account: String, bic: String) -> String {
 
-    return String()
+    if account.characters.count < 1
+    {
+      return String()
+    }
+
+    //ISO 9362:2009 states the SWIFT code should be either 8 or 11 characters.
+    if bic.characters.count != 8 && bic.characters.count != 11
+    {
+      return String()
+    }
+
+    let countryCode = bic.substringWithRange(Range<String.Index>(bic.startIndex.advancedBy(4)..<bic.startIndex.advancedBy(6)))
+    let bankCode = bic.substringToIndex(bic.startIndex.advancedBy(4))
+
+    let structure = RFIBANHelper.ibanStructure(countryCode)
+
+    let requiredLength = Int(structure["Length"] as! NSNumber)
+    let accountNumber = RFIBANHelper.preFixZerosToAccount(account, length: requiredLength - 4)
+
+    let ibanWithoutChecksum = String(format: "%@00%@%@", countryCode, bankCode, accountNumber)
+
+    let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
+
+    return String(format: "%@%d%@%@", countryCode, checksum, bankCode, accountNumber)
   }
 
   public static func isValidIBAN(iban: String) -> IbanCheckStatus {
@@ -49,27 +72,31 @@ public class RFIBANHelper: NSObject {
       RFIBANHelper.startBytesRegex,
       options: .RegularExpressionSearch) == nil
     {
-      return.InvalidStartBytes
+      return .InvalidStartBytes
     }
 
     let nf = NSNumberFormatter()
     let innerStructure = structure["InnerStructure"] as! String
 
-    var ofset = 4 // skip the country code and controll number
+    var bbanOfset = 0
+    let bban = iban.substringFromIndex(iban.startIndex.advancedBy(4))
 
     for i in 0...(innerStructure.characters.count/3)-1
     {
       let startIndex = i * 3
 
-      let format = innerStructure.substringWithRange(Range<String.Index>(innerStructure.startIndex.advancedBy(startIndex)..<innerStructure.startIndex.advancedBy(startIndex + 1)))
+      let format = innerStructure.substringWithRange(Range<String.Index>(innerStructure.startIndex.advancedBy(startIndex)..<innerStructure.startIndex.advancedBy(startIndex + 3)))
 
       let formatLength = Int(innerStructure.substringWithRange(Range<String.Index>(innerStructure.startIndex.advancedBy(startIndex + 1)..<innerStructure.startIndex.advancedBy(startIndex + 3))))
 
-      if !RFIBANHelper.isStringConformFormat(iban.substringWithRange(Range<String.Index>(iban.startIndex.advancedBy(ofset)..<iban.startIndex.advancedBy(ofset + formatLength!))), format: format) {
+      let innerPart = bban.substringWithRange(Range<String.Index>(bban.startIndex.advancedBy(bbanOfset)..<bban.startIndex.advancedBy(bbanOfset + formatLength!)))
+
+      if !RFIBANHelper.isStringConformFormat(innerPart, format: format)
+      {
         return .InvalidInnerStructure
       }
 
-      ofset = 4 + (i * 3)
+      bbanOfset = bbanOfset + formatLength!
     }
 
     //  1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
@@ -92,28 +119,41 @@ public class RFIBANHelper: NSObject {
 
   public static func isStringConformFormat(string: String, format: String) -> Bool
   {
-    if format == "A"
+    if string == "" || format == ""
     {
-      return string.rangeOfString(RFIBANHelper.decimalsAndCharacters, options: .RegularExpressionSearch) == nil
-    } else if format == "B"
+      return false
+    }
+
+    let formatLength = Int(format.substringFromIndex(format.startIndex.advancedBy(1)))
+
+    if formatLength != string.characters.count
     {
-      return string.rangeOfString(RFIBANHelper.decimalsAndUppercaseCharacters, options: .RegularExpressionSearch) == nil
-    } else if format == "C"
-    {
-      return string.rangeOfString(RFIBANHelper.characters, options: .RegularExpressionSearch) == nil
-    } else if format == "F"
-    {
-      return string.rangeOfString(RFIBANHelper.decimals, options: .RegularExpressionSearch) == nil
-    } else if format == "L"
-    {
-      return string.rangeOfString(RFIBANHelper.lowercaseCharacters, options: .RegularExpressionSearch) == nil
-    } else if format == "U"
-    {
-      return string.rangeOfString(RFIBANHelper.uppercaseCharacters, options: .RegularExpressionSearch) == nil
-    } else if format == "W"
-    {
-      return string.rangeOfString(RFIBANHelper.decimalsAndLowercaseCharacters, options: .RegularExpressionSearch) == nil
-    } else {
+      return false
+    }
+
+    switch format.characters.first! {
+    case "A":
+      return string.rangeOfString(RFIBANHelper.decimalsAndCharacters, options: .RegularExpressionSearch) != nil
+
+    case "B":
+      return string.rangeOfString(RFIBANHelper.decimalsAndUppercaseCharacters, options: .RegularExpressionSearch) != nil
+
+    case "C":
+      return string.rangeOfString(RFIBANHelper.characters, options: .RegularExpressionSearch) != nil
+
+    case "F":
+      return string.rangeOfString(RFIBANHelper.decimals, options: .RegularExpressionSearch) != nil
+
+    case "L":
+      return string.rangeOfString(RFIBANHelper.lowercaseCharacters, options: .RegularExpressionSearch) != nil
+
+    case "U":
+      return string.rangeOfString(RFIBANHelper.uppercaseCharacters, options: .RegularExpressionSearch) != nil
+
+    case "W":
+      return string.rangeOfString(RFIBANHelper.decimalsAndLowercaseCharacters, options: .RegularExpressionSearch) != nil
+
+    default:
       return false
     }
   }
