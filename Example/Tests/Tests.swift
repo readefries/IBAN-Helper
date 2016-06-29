@@ -6,18 +6,15 @@ import RFIBANHelper
 
 class Tests: XCTestCase {
 
-  override func setUp()
-  {
+  override func setUp() {
     super.setUp()
   }
 
-  override func tearDown()
-  {
+  override func tearDown() {
     super.tearDown()
   }
 
-  func testReplacingCharactersWithDigits()
-  {
+  func testReplacingCharactersWithDigits() {
     let sut = "GB82WEST12345698765432"
 
     let result = RFIBANHelper.intValueForString(sut)
@@ -25,8 +22,7 @@ class Tests: XCTestCase {
     XCTAssert(result == "1611823214282912345698765432", String(format: "the result should be 11823214282912345698765432, not %@", result))
   }
 
-  func testInvalidIntValueForString()
-  {
+  func testInvalidIntValueForString() {
     let sut = ")(*&(*&%&^$"
 
     let result = RFIBANHelper.intValueForString(sut)
@@ -34,8 +30,7 @@ class Tests: XCTestCase {
     XCTAssert(result == "", String(format: "the result should be an empty string, not %@", result))
   }
 
-  func testCreateNLIban()
-  {
+  func testCreateNLIban() {
     var account = ""
     var bic = ""
 
@@ -58,8 +53,7 @@ class Tests: XCTestCase {
     XCTAssert(result == expectedResult, String(format:"The expected resultis '%@' not '%@'", expectedResult, result))
   }
 
-  func testInvalidStartBytes()
-  {
+  func testInvalidStartBytes() {
     let sut = "NLKR"
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -67,8 +61,7 @@ class Tests: XCTestCase {
     XCTAssert(result == .InvalidStartBytes, String(format: "%d should be .InvalidStartBytes", result.rawValue))
   }
 
-  func testValidDecimalsAndCharactersFormat()
-  {
+  func testValidDecimalsAndCharactersFormat() {
     let sut = "0124556789ABCde"
     let format = "A15"
 
@@ -77,8 +70,7 @@ class Tests: XCTestCase {
     XCTAssert(result == true, String(format: "%@ should be validated with format %@ successfuly", sut, format))
   }
 
-  func testValidDecimalAndUppercaseCharacters()
-  {
+  func testValidDecimalAndUppercaseCharacters() {
     let sut = "0123456789ABCDEFGHIJ"
     let format = "B20"
 
@@ -88,8 +80,7 @@ class Tests: XCTestCase {
     
   }
 
-  func testValidCharacters()
-  {
+  func testValidCharacters() {
     let sut = "ABCdef"
     let format = "C06"
 
@@ -99,8 +90,7 @@ class Tests: XCTestCase {
     
   }
 
-  func testValidDecimals()
-  {
+  func testValidDecimals() {
     let sut = "1234567890"
     let format = "F10"
 
@@ -110,8 +100,7 @@ class Tests: XCTestCase {
     
   }
 
-  func testValidLowercaseCharacters()
-  {
+  func testValidLowercaseCharacters() {
     let sut = "abcdefgh"
     let format = "L08"
 
@@ -121,8 +110,7 @@ class Tests: XCTestCase {
     
   }
 
-  func testValidUppercaseCharacters()
-  {
+  func testValidUppercaseCharacters() {
     let sut = "ABCDEFGH"
     let format = "U08"
 
@@ -132,8 +120,7 @@ class Tests: XCTestCase {
 
   }
 
-  func testValidDecimalsAndLowercaseCharacters()
-  {
+  func testValidDecimalsAndLowercaseCharacters() {
     let sut = "0123abcd"
     let format = "W08"
 
@@ -143,8 +130,7 @@ class Tests: XCTestCase {
 
   }
 
-  func testInvalidFormat()
-  {
+  func testInvalidFormat() {
     let sut = "0123456789"
     let format = "X10"
 
@@ -153,8 +139,7 @@ class Tests: XCTestCase {
     XCTAssert(result == false, "")
   }
 
-  func testValidityOfGBIban()
-  {
+  func testValidityOfGBIban() {
     let sut = "GB82WEST12345698765432"
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -162,8 +147,7 @@ class Tests: XCTestCase {
     XCTAssert(result == .ValidIban, String(format: "%@ should be a valid IBAN, yet the result is %@", sut, result.rawValue))
   }
 
-  func testValidityOfNLIban()
-  {
+  func testValidityOfNLIban() {
     let sut = "NL20INGB0001234567"
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -171,8 +155,7 @@ class Tests: XCTestCase {
     XCTAssert(result == .ValidIban, String(format: "%@ should be a valid IBAN, yet the result is %@", sut, result.rawValue))
   }
 
-  func testValidityOfHUIban()
-  {
+  func testValidityOfHUIban() {
     let sut = "HU42117730161111101800000000"
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -180,8 +163,7 @@ class Tests: XCTestCase {
     XCTAssert(result == .ValidIban, String(format: "%@ should be a valid IBAN, yet the result is %@", sut, result.rawValue))
   }
 
-  func testInvalidCharacters()
-  {
+  func testInvalidCharacters() {
     let sut = "()$("
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -189,8 +171,7 @@ class Tests: XCTestCase {
     XCTAssert(result == .InvalidCharacters, String(format: "%@ should contain invalid chatacter IBAN, yet the result is %@", sut, result.rawValue))
   }
 
-  func testInvalidCountryCode()
-  {
+  func testInvalidCountryCode() {
     let sut = "KR00BANK0123456789"
 
     let result = RFIBANHelper.isValidIBAN(sut)
@@ -198,16 +179,14 @@ class Tests: XCTestCase {
     XCTAssert(result == .InvalidCountryCode, String(format: "%@ should result in invalid country, yet the result is %@", sut, result.rawValue))
   }
 
-  func testISO7064_Mod_97_10()
-  {
+  func testISO7064_Mod_97_10() {
     let sut = "182316110001234567232100"
 
     let result = ISO7064.MOD97_10(sut)
     XCTAssert(result == 78, String(format: "182316110001234567232100 mod 97 should be 78, not %d", result))
   }
 
-  func testISO7064_Mod_97_10_WithInvalidCharacters()
-  {
+  func testISO7064_Mod_97_10_WithInvalidCharacters() {
     let sut = "INVALID CHARACTERS"
 
     let result = ISO7064.MOD97_10(sut)

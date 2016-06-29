@@ -1,10 +1,3 @@
-//
-//  ISO7064.swift
-//  RFIBAN-Helper
-//
-//  Created by Hindrik Bruinsma on 25/04/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
 
 import Foundation
 
@@ -19,11 +12,11 @@ public class ISO7064: NSObject {
 
     var remainingInput = input
 
-    while(true)
-    {
+    while(true) {
       let chunkSize = remainingInput.characters.count < 9 ? remainingInput.characters.count : 9
 
       let chunk = Int(remainingInput.substringWithRange(Range<String.Index>(remainingInput.startIndex..<remainingInput.startIndex.advancedBy(chunkSize))))
+
       if chunk < 97 || remainingInput.characters.count < 3 {
         break
       }
