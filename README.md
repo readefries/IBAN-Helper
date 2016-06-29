@@ -30,7 +30,12 @@ RFIBAN-Helper is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "RFIBAN-Helper"
+pod 'RFIBAN-Helper', '~> 2.0.0'
+```
+
+For Swift 2.3 use
+```
+pod 'RFIBAN-Helper', '~> 1.0.3'
 ```
 
 ## Author

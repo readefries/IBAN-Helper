@@ -1,12 +1,16 @@
+# 2.0.0
+
+* Updated code to Swift 3.0
+
 # 1.0.3
 
-* Fixed an issue where a crash could occur when BBAN is empty
+* Added more test to increase code coverage
+* Fixed issue which caused inner BBAN structure not to be tested properly
+* Updated code to Swift 2.3
 
 # 1.0.2
 
 * Added code coverage checking
-* Added more test to increase code coverage
-* Fixed issue which caused inner BBAN structure not to be tested properly
 
 # 1.0.1
 
