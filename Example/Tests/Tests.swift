@@ -2,7 +2,7 @@
 import UIKit
 import XCTest
 
-@testable import RFIBANHelper
+import RFIBANHelper
 
 class Tests: XCTestCase {
 

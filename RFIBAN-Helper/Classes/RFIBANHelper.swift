@@ -201,7 +201,7 @@ public class RFIBANHelper: NSObject {
       return ""
     }
 
-    var returnValue = NSMutableString()
+    let returnValue = NSMutableString()
 
     for charValue in string.unicodeScalars {
 
