@@ -1,3 +1,7 @@
+# 1.0.3
+
+* Fixed an issue where a crash could occur when BBAN is empty
+
 # 1.0.2
 
 * Added code coverage checking
