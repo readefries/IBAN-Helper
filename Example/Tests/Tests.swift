@@ -30,6 +30,14 @@ class Tests: XCTestCase {
     XCTAssert(result == "", String(format: "the result should be an empty string, not %@", result))
   }
 
+  func testIBANWithoutBankAccountNumber() {
+    let sut = "NL26"
+    
+    let result = RFIBANHelper.isValidIBAN(sut)
+    
+    XCTAssert(result == .InvalidBankAccount, "The BBAN part of the IBAN should have at least one digit")
+  }
+  
   func testCreateNLIban() {
     var account = ""
     var bic = ""

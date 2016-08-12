@@ -66,7 +66,7 @@ public class RFIBANHelper: NSObject {
     {
       return .InvalidCountryCode
     }
-
+    
     if iban.substringWithRange(Range<String.Index>(
     iban.startIndex..<iban.startIndex.advancedBy(4))).rangeOfString(
       RFIBANHelper.startBytesRegex,
@@ -81,6 +81,10 @@ public class RFIBANHelper: NSObject {
     var bbanOfset = 0
     let bban = iban.substringFromIndex(iban.startIndex.advancedBy(4))
 
+    if bban.isEmpty {
+      return .InvalidBankAccount
+    }
+    
     for i in 0...(innerStructure.characters.count/3)-1
     {
       let startIndex = i * 3
