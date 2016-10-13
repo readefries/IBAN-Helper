@@ -4,9 +4,9 @@ import Foundation
 public class ISO7064: NSObject {
   public static let MOD97_10_Valid_Chars = "^(0-9)*$"
 
-  public static func MOD97_10(input: String) -> Int {
+  public static func MOD97_10(_ input: String) -> Int {
 
-    if (input.rangeOfCharacterFromSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet) != nil){
+    if (input.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) != nil){
       return NSNotFound
     }
 
@@ -15,14 +15,14 @@ public class ISO7064: NSObject {
     while(true) {
       let chunkSize = remainingInput.characters.count < 9 ? remainingInput.characters.count : 9
 
-      let chunk = Int(remainingInput.substringWithRange(Range<String.Index>(remainingInput.startIndex..<remainingInput.startIndex.advancedBy(chunkSize))))
+      let chunk = Int(remainingInput.substring(with: Range<String.Index>(remainingInput.startIndex..<remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize))))
 
-      if chunk < 97 || remainingInput.characters.count < 3 {
+      if chunk! < 97 || remainingInput.characters.count < 3 {
         break
       }
 
       let remainder = chunk! % 97
-      remainingInput = String(format: "%d%@", remainder, remainingInput.substringFromIndex(remainingInput.startIndex.advancedBy(chunkSize)))
+      remainingInput = String(format: "%d%@", remainder, remainingInput.substring(from: remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize)))
     }
 
     return Int(remainingInput)!
