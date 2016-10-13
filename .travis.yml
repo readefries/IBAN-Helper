@@ -1,5 +1,5 @@
 language: objective-c
 osx_image: xcode8
 script:
- - xcodebuild -project Example/RFIBANHelper.xcodeproj -sdk iphonesimulator10.0 test -scheme RFIBANHelper -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.0' |xcpretty
+ - xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO  -destination 'platform=iOS Simulator,name=iPhone 7' | xcpretty
  - pod lib lint --quick
