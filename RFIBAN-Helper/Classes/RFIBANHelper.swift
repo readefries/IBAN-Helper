@@ -8,11 +8,15 @@ public enum IbanCheckStatus: Int {
   case invalidChecksum
   case invalidInnerStructure
   case invalidStartBytes
+  @available(*, deprecated: 2.0.1, message: "Pleaes use `invalidStructure` instead")
   case invalidCharacters
   case invalidLength
+  case invalidStructure
 }
 
 public class RFIBANHelper: NSObject {
+
+  static let ibanStructure = "^([A-Za-z0-9]{4,})*$"
 
   static let decimalsAndCharacters = "^([A-Za-z0-9])*$"
   static let decimalsAndUppercaseCharacters = "^([A-Z0-9])*$"
@@ -53,9 +57,9 @@ public class RFIBANHelper: NSObject {
   }
 
   public static func isValidIBAN(_ iban: String) -> IbanCheckStatus {
-    if iban.range(of: RFIBANHelper.decimalsAndCharacters, options: .regularExpression) == nil
+    if iban.range(of: RFIBANHelper.ibanStructure, options: .regularExpression) == nil
     {
-      return .invalidCharacters
+      return .invalidStructure
     }
 
     let countryCode = iban.substring(with: Range<String.Index>(iban.startIndex..<iban.characters.index(iban.startIndex, offsetBy: 2)))

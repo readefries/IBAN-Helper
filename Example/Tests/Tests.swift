@@ -1,6 +1,7 @@
 import UIKit
 import XCTest
-import RFIBANHelper
+
+@testable import RFIBANHelper
 
 class Tests: XCTestCase {
 
@@ -34,6 +35,20 @@ class Tests: XCTestCase {
     let result = RFIBANHelper.isValidIBAN(sut)
     
     XCTAssert(result == .invalidBankAccount, "The BBAN part of the IBAN should have at least one digit")
+  }
+
+  func testIBANWithInvalidStructure() {
+    var sut = "ES"
+
+    var result = RFIBANHelper.isValidIBAN(sut)
+
+    XCTAssert(result == .invalidStructure, "The IBAN prefix is missing, or the IBAN contains invalid characters")
+
+    sut = ""
+
+    result = RFIBANHelper.isValidIBAN(sut)
+
+    XCTAssert(result == .invalidStructure, "The IBAN prefix is missing, or the IBAN contains invalid characters")
   }
   
   func testCreateNLIban() {
@@ -167,14 +182,6 @@ class Tests: XCTestCase {
     let result = RFIBANHelper.isValidIBAN(sut)
 
     XCTAssert(result == .validIban, String(format: "%@ should be a valid IBAN, yet the result is %@", sut, result.rawValue))
-  }
-
-  func testInvalidCharacters() {
-    let sut = "()$("
-
-    let result = RFIBANHelper.isValidIBAN(sut)
-
-    XCTAssert(result == .invalidCharacters, String(format: "%@ should contain invalid chatacter IBAN, yet the result is %@", sut, result.rawValue))
   }
 
   func testInvalidCountryCode() {
