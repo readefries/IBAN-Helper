@@ -96,8 +96,10 @@ public class RFIBANHelper: NSObject {
       let format = innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3)))
 
       let formatLength = Int(innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3))))
-
-      let innerPart = bban.substring(with: Range<String.Index>(bban.characters.index(bban.startIndex, offsetBy: bbanOfset)..<bban.characters.index(bban.startIndex, offsetBy: bbanOfset + formatLength!)))
+      guard let innerPartEndIndex = bban.characters.index(bban.startIndex, offsetBy: bbanOfset + formatLength!, limitedBy: bban.endIndex) else {
+        return .invalidInnerStructure
+      }
+      let innerPart = bban.substring(with: Range<String.Index>(bban.characters.index(bban.startIndex, offsetBy: bbanOfset)..<innerPartEndIndex))
 
       if !RFIBANHelper.isStringConformFormat(innerPart, format: format)
       {
