@@ -30,6 +30,7 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		62E602B571EFC6DDEA3C0590 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		B119F4511EA09FE500F270EE /* RFIBANHelper.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RFIBANHelper.playground; sourceTree = "<group>"; };
 		B142B7991CCDF14E006E3F2A /* IBANStructure.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IBANStructure.plist; path = "../RFIBAN-Helper/Assets/IBANStructure.plist"; sourceTree = "<group>"; };
 		B142B79B1CCE2207006E3F2A /* ISO7064.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ISO7064.swift; path = "../RFIBAN-Helper/Classes/ISO7064.swift"; sourceTree = "<group>"; };
 		B142B7A21CD28CEC006E3F2A /* RFIBANHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RFIBANHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +62,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				B119F4511EA09FE500F270EE /* RFIBANHelper.playground */,
 				B16B6C2B1CC77F0A00D4BDD7 /* src */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
