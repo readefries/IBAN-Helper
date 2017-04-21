@@ -80,7 +80,9 @@ public class RFIBANHelper: NSObject {
     }
 
     let nf = NumberFormatter()
-    let innerStructure = structure["InnerStructure"] as! String
+    guard let innerStructure = structure["InnerStructure"] as? String else {
+      preconditionFailure("Missing Innerstructure for \(countryCode)")
+    }
 
     var bbanOfset = 0
     let bban = iban.substring(from: iban.characters.index(iban.startIndex, offsetBy: 4))
@@ -95,18 +97,20 @@ public class RFIBANHelper: NSObject {
 
       let format = innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3)))
 
-      let formatLength = Int(innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3))))
-      guard let innerPartEndIndex = bban.characters.index(bban.startIndex, offsetBy: bbanOfset + formatLength!, limitedBy: bban.endIndex) else {
+
+      guard let formatLength = Int(innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3)))),
+            let innerPartEndIndex = bban.characters.index(bban.startIndex, offsetBy: bbanOfset + formatLength, limitedBy: bban.endIndex) else {
         return .invalidInnerStructure
       }
+
       let innerPart = bban.substring(with: Range<String.Index>(bban.characters.index(bban.startIndex, offsetBy: bbanOfset)..<innerPartEndIndex))
 
-      if !RFIBANHelper.isStringConformFormat(innerPart, format: format)
+      if RFIBANHelper.isStringConformFormat(innerPart, format: format) == false
       {
         return .invalidInnerStructure
       }
 
-      bbanOfset = bbanOfset + formatLength!
+      bbanOfset = bbanOfset + formatLength
     }
 
     //  1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
@@ -118,8 +122,11 @@ public class RFIBANHelper: NSObject {
       }
     }
 
-    let expectedCheckSum = nf.number(from: iban.substring(with: Range<String.Index>(iban.characters.index(iban.startIndex, offsetBy: 2)..<iban.characters.index(iban.startIndex, offsetBy: 4))))!.intValue
-    if expectedCheckSum == RFIBANHelper.checkSumForIban(iban, structure:structure)
+    guard let expectedCheckSum = nf.number(from: iban.substring(with: Range<String.Index>(iban.characters.index(iban.startIndex, offsetBy: 2)..<iban.characters.index(iban.startIndex, offsetBy: 4)))) else {
+      return .invalidChecksum
+    }
+
+    if expectedCheckSum.intValue == RFIBANHelper.checkSumForIban(iban, structure:structure)
     {
       return .validIban
     }
@@ -168,25 +175,27 @@ public class RFIBANHelper: NSObject {
     }
   }
 
-  public static func ibanStructure(_ countryCode: String) -> Dictionary<String, NSObject> {
+  public static func ibanStructure(_ countryCode: String) -> [String: Any] {
 
     if let path = Bundle(for: object_getClass(self)).path(forResource: "IBANStructure", ofType: "plist") {
-      let ibanStructureList = NSArray(contentsOfFile:path) as! [[String: AnyObject]]
-
-      for ibanStructure in ibanStructureList {
-        if ibanStructure["Country"] as! String == countryCode {
-          return ibanStructure as! Dictionary<String, NSObject>
+      if let ibanStructureList = NSArray(contentsOfFile:path) as? [[String: Any]] {
+        for ibanStructure in ibanStructureList {
+          if ibanStructure["Country"] as? String == countryCode {
+            return ibanStructure
+          }
         }
       }
     }
 
-    return Dictionary()
+    return [:]
   }
 
-  public static func checkSumForIban(_ iban: String, structure: Dictionary<String, NSObject>) -> Int {
+  public static func checkSumForIban(_ iban: String, structure: [String: Any]) -> Int {
     //  2. Replace the two check digits by 00 (e.g., GB00 for the UK).
     //  3. Move the four initial characters to the end of the string.
-    var checkedIban = String(format: "%@%@00", iban.substring(from: iban.characters.index(iban.startIndex, offsetBy: 4)), iban.substring(to: iban.characters.index(iban.startIndex, offsetBy: 2)))
+    let bankCode = iban.substring(from: iban.characters.index(iban.startIndex, offsetBy: 4))
+    let countryCode = iban.substring(to: iban.characters.index(iban.startIndex, offsetBy: 2))
+    var checkedIban = "\(bankCode)\(countryCode)00"
 
     //  4. Replace the letters in the string with digits, expanding the string as necessary, such that A or
     //  a = 10, B or b = 11, and Z or z = 35. Each alphabetic character is therefore replaced by 2 digits.
