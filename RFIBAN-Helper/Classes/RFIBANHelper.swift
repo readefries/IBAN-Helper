@@ -28,32 +28,48 @@ public class RFIBANHelper: NSObject {
 
   static let startBytesRegex = "^([A-Z]{2}[0-9]{2})$"
 
-  public static func createIBAN(_ account: String, bic: String) -> String {
+  public static func createIBAN(_ account: String, bic: String? = nil, countryCode: String? = nil) -> String {
 
     if account.characters.count < 1
     {
       return String()
     }
 
-    //ISO 9362:2009 states the SWIFT code should be either 8 or 11 characters.
-    if bic.characters.count != 8 && bic.characters.count != 11
-    {
-      return String()
+    if let bic = bic {
+      //ISO 9362:2009 states the SWIFT code should be either 8 or 11 characters.
+      if bic.characters.count != 8 && bic.characters.count != 11
+      {
+        return String()
+      }
+
+      let countryCode = bic.substring(with: Range<String.Index>(bic.characters.index(bic.startIndex, offsetBy: 4)..<bic.characters.index(bic.startIndex, offsetBy: 6)))
+      let bankCode = bic.substring(to: bic.characters.index(bic.startIndex, offsetBy: 4))
+
+      let structure = RFIBANHelper.ibanStructure(countryCode)
+
+      guard let requiredLength = structure["Length"] as? Int else {
+        preconditionFailure("Missing length for \(countryCode)")
+      }
+      let accountNumber = RFIBANHelper.preFixZerosToAccount(account, length: requiredLength - 4)
+
+      let ibanWithoutChecksum = "\(countryCode)00\(bankCode)\(accountNumber)"
+
+      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
+
+      return "\(countryCode)\(checksum)\(bankCode)\(accountNumber)"
     }
 
-    let countryCode = bic.substring(with: Range<String.Index>(bic.characters.index(bic.startIndex, offsetBy: 4)..<bic.characters.index(bic.startIndex, offsetBy: 6)))
-    let bankCode = bic.substring(to: bic.characters.index(bic.startIndex, offsetBy: 4))
+    if let countryCode = countryCode {
+      let structure = RFIBANHelper.ibanStructure(countryCode)
 
-    let structure = RFIBANHelper.ibanStructure(countryCode)
+      let ibanWithoutChecksum = "\(countryCode)00\(account)"
 
-    let requiredLength = Int(structure["Length"] as! NSNumber)
-    let accountNumber = RFIBANHelper.preFixZerosToAccount(account, length: requiredLength - 4)
+      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
 
-    let ibanWithoutChecksum = String(format: "%@00%@%@", countryCode, bankCode, accountNumber)
+      return "\(countryCode)\(checksum)\(account)"
+    }
 
-    let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
-
-    return String(format: "%@%d%@%@", countryCode, checksum, bankCode, accountNumber)
+    return ""
   }
 
   public static func isValidIBAN(_ iban: String) -> IbanCheckStatus {
