@@ -9,7 +9,7 @@
 A Swift helper class to validate IBAN accounts.
 Feel happy to contribute!
 
-The dataset used to validate the accounts, is from the [UN/CEFACT - TBG Finance site](http://www.tbg5-finance.org/?ibandocs.shtml).
+The dataset used to validate the accounts, is from the [UN/CEFACT - TBG Finance site](http://www.tbg5-finance.org/).
 
 ## Usage
 
