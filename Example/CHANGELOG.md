@@ -1,3 +1,7 @@
+# 2.0.2
+* Added playground
+* Updated structure file to add support for new countries
+
 # 2.0.1
 * Added `invalidStructure` as resultType to also check the presence of a prefix
 * Deprecated `invalidCharacters` in favour of `invalidStructure`
