@@ -1,7 +1,7 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-import RFIBANHelper
+@testable import RFIBANHelper
 
 let sut = "GR160110125000000001230065"
 
