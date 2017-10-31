@@ -13,16 +13,19 @@ public class ISO7064: NSObject {
     var remainingInput = input
 
     while(true) {
-      let chunkSize = remainingInput.characters.count < 9 ? remainingInput.characters.count : 9
+      let chunkSize = remainingInput.count < 9 ? remainingInput.count : 9
 
-      let chunk = Int(remainingInput.substring(with: Range<String.Index>(remainingInput.startIndex..<remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize))))
+      let chunk = Int(remainingInput[remainingInput.startIndex..<remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize)])
 
-      if chunk! < 97 || remainingInput.characters.count < 3 {
+      if chunk! < 97 || remainingInput.count < 3 {
         break
       }
 
       let remainder = chunk! % 97
-      remainingInput = String(format: "%d%@", remainder, remainingInput.substring(from: remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize)))
+
+      let nextChunk = remainingInput[remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize)...]
+
+      remainingInput = "\(remainder)\(nextChunk)"
     }
 
     return Int(remainingInput)!

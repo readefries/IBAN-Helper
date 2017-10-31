@@ -30,22 +30,22 @@ public class RFIBANHelper: NSObject {
 
   public static func createIBAN(_ account: String, bic: String? = nil, countryCode: String? = nil) -> String {
 
-    if account.characters.count < 1
+    if account.count < 1
     {
-      return String()
+      return ""
     }
 
     if let bic = bic {
       //ISO 9362:2009 states the SWIFT code should be either 8 or 11 characters.
-      if bic.characters.count != 8 && bic.characters.count != 11
+      if bic.count != 8 && bic.count != 11
       {
-        return String()
+        return ""
       }
 
-      let countryCode = bic.substring(with: Range<String.Index>(bic.characters.index(bic.startIndex, offsetBy: 4)..<bic.characters.index(bic.startIndex, offsetBy: 6)))
-      let bankCode = bic.substring(to: bic.characters.index(bic.startIndex, offsetBy: 4))
+      let countryCode = bic[bic.index(bic.startIndex, offsetBy: 4)..<bic.index(bic.startIndex, offsetBy: 6)]
+      let bankCode = bic[..<bic.index(bic.startIndex, offsetBy: 4)]
 
-      let structure = RFIBANHelper.ibanStructure(countryCode)
+      let structure = RFIBANHelper.ibanStructure(String(countryCode))
 
       guard let requiredLength = structure["Length"] as? Int else {
         preconditionFailure("Missing length for \(countryCode)")
@@ -78,17 +78,21 @@ public class RFIBANHelper: NSObject {
       return .invalidStructure
     }
 
-    let countryCode = iban.substring(with: Range<String.Index>(iban.startIndex..<iban.characters.index(iban.startIndex, offsetBy: 2)))
+    if iban.count < 4 {
+      return .invalidStructure
+    }
 
-    let structure = RFIBANHelper.ibanStructure(countryCode)
+    let countryCode = iban[...iban.index(iban.startIndex, offsetBy:1)]
+
+    let structure = RFIBANHelper.ibanStructure(String(countryCode))
 
     if structure.keys.count == 0
     {
       return .invalidCountryCode
     }
 
-    if iban.substring(with: Range<String.Index>(
-    iban.startIndex..<iban.characters.index(iban.startIndex, offsetBy: 4))).range(
+    let startBytes = String(iban[...iban.index(iban.startIndex, offsetBy: 3)])
+    if startBytes.range(
       of: RFIBANHelper.startBytesRegex,
       options: .regularExpression) == nil
     {
@@ -101,25 +105,23 @@ public class RFIBANHelper: NSObject {
     }
 
     var bbanOfset = 0
-    let bban = iban.substring(from: iban.characters.index(iban.startIndex, offsetBy: 4))
+    let bban = iban[iban.index(iban.startIndex, offsetBy: 4)...]
 
     if bban.isEmpty {
       return .invalidBankAccount
     }
     
-    for i in 0...(innerStructure.characters.count/3)-1
+    for i in 0...(innerStructure.count/3)-1
     {
       let startIndex = i * 3
 
-      let format = innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3)))
+      let format = String(innerStructure[innerStructure.index(innerStructure.startIndex, offsetBy: startIndex)..<innerStructure.index(innerStructure.startIndex, offsetBy: startIndex + 3)])
 
-
-      guard let formatLength = Int(innerStructure.substring(with: Range<String.Index>(innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.characters.index(innerStructure.startIndex, offsetBy: startIndex + 3)))),
-            let innerPartEndIndex = bban.characters.index(bban.startIndex, offsetBy: bbanOfset + formatLength, limitedBy: bban.endIndex) else {
+      guard let formatLength = Int(innerStructure[innerStructure.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.index(innerStructure.startIndex, offsetBy: startIndex + 3)]) else {
         return .invalidInnerStructure
       }
 
-      let innerPart = bban.substring(with: Range<String.Index>(bban.characters.index(bban.startIndex, offsetBy: bbanOfset)..<innerPartEndIndex))
+      let innerPart = String(bban[bban.index(bban.startIndex, offsetBy: bbanOfset)..<bban.index(bban.startIndex, offsetBy: bbanOfset + formatLength)])
 
       if RFIBANHelper.isStringConformFormat(innerPart, format: format) == false
       {
@@ -132,13 +134,15 @@ public class RFIBANHelper: NSObject {
     //  1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
     if let expectedLength = structure["Length"] as? NSNumber
     {
-      if expectedLength.intValue != iban.characters.count
+      if expectedLength.intValue != iban.count
       {
         return .invalidLength
       }
     }
 
-    guard let expectedCheckSum = nf.number(from: iban.substring(with: Range<String.Index>(iban.characters.index(iban.startIndex, offsetBy: 2)..<iban.characters.index(iban.startIndex, offsetBy: 4)))) else {
+    let checksumString = iban[iban.index(iban.startIndex, offsetBy: 2)..<iban.index(iban.startIndex, offsetBy: 4)]
+    
+    guard let expectedCheckSum = nf.number(from: String(checksumString)) else {
       return .invalidChecksum
     }
 
@@ -157,14 +161,14 @@ public class RFIBANHelper: NSObject {
       return false
     }
 
-    let formatLength = Int(format.substring(from: format.characters.index(format.startIndex, offsetBy: 1)))
+    let formatLength = Int(String(format[format.index(format.startIndex, offsetBy: 1)...format.index(format.startIndex, offsetBy: 2)]))
 
-    if formatLength != string.characters.count
+    if formatLength != string.count
     {
       return false
     }
 
-    switch format.characters.first! {
+    switch format.first! {
     case "A":
       return string.range(of: RFIBANHelper.decimalsAndCharacters, options: .regularExpression) != nil
 
@@ -193,7 +197,7 @@ public class RFIBANHelper: NSObject {
 
   public static func ibanStructure(_ countryCode: String) -> [String: Any] {
 
-    if let path = Bundle(for: object_getClass(self)).path(forResource: "IBANStructure", ofType: "plist") {
+    if let path = Bundle(for: object_getClass(self)!).path(forResource: "IBANStructure", ofType: "plist") {
       if let ibanStructureList = NSArray(contentsOfFile:path) as? [[String: Any]] {
         for ibanStructure in ibanStructureList {
           if ibanStructure["Country"] as? String == countryCode {
@@ -209,8 +213,8 @@ public class RFIBANHelper: NSObject {
   public static func checkSumForIban(_ iban: String, structure: [String: Any]) -> Int {
     //  2. Replace the two check digits by 00 (e.g., GB00 for the UK).
     //  3. Move the four initial characters to the end of the string.
-    let bankCode = iban.substring(from: iban.characters.index(iban.startIndex, offsetBy: 4))
-    let countryCode = iban.substring(to: iban.characters.index(iban.startIndex, offsetBy: 2))
+    let bankCode = iban[iban.index(iban.startIndex, offsetBy: 4)...]
+    let countryCode = iban[..<iban.index(iban.startIndex, offsetBy: 2)]
     var checkedIban = "\(bankCode)\(countryCode)00"
 
     //  4. Replace the letters in the string with digits, expanding the string as necessary, such that A or
@@ -227,8 +231,6 @@ public class RFIBANHelper: NSObject {
 
     return 98 - remainder;
   }
-
- 
 
   public static func intValueForString(_ string: String) -> String {
     if string.range(of: RFIBANHelper.decimalsAndUppercaseCharacters, options: .regularExpression) == nil
@@ -259,7 +261,7 @@ public class RFIBANHelper: NSObject {
 
     var banknumberWithPrefixes = bankNumber
 
-    for _ in bankNumber.characters.count...length {
+    for _ in bankNumber.count...length {
       banknumberWithPrefixes = String(format:"0%@", bankNumber)
     }
 
