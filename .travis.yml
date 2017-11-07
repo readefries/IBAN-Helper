@@ -1,7 +1,9 @@
 language: objective-c
 osx_image: xcode9
+cache:
+ - bundler
 script:
- - xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 7,OS=latest' | xcpretty --color
- - pod lib lint --quick
+ - xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 7,OS=latest'
+ - bundle exec pod lib lint --quick
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+ - bash <(curl -s https://codecov.io/bash)
