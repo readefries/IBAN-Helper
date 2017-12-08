@@ -199,4 +199,12 @@ class Tests: XCTestCase {
     let result = ISO7064.MOD97_10(sut)
     XCTAssert(result == NSNotFound, "\(sut) should return NSNotFound, not \(result)")
   }
+    
+  func testThatIbanWithOneCharacteMissingWillNotCrash() {
+    let sut = "NL20INGB000123456"
+    
+    let result = RFIBANHelper.isValidIBAN(sut)
+    
+    XCTAssert(result == .invalidInnerStructure, "\(sut) should be an invalid structure, yet the result is \(result)")
+  }
 }

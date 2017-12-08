@@ -120,8 +120,12 @@ public class RFIBANHelper: NSObject {
       guard let formatLength = Int(innerStructure[innerStructure.index(innerStructure.startIndex, offsetBy: startIndex + 1)..<innerStructure.index(innerStructure.startIndex, offsetBy: startIndex + 3)]) else {
         return .invalidInnerStructure
       }
-
-      let innerPart = String(bban[bban.index(bban.startIndex, offsetBy: bbanOfset)..<bban.index(bban.startIndex, offsetBy: bbanOfset + formatLength)])
+      
+      guard let partEndIndex = bban.index(bban.startIndex, offsetBy: bbanOfset + formatLength, limitedBy: bban.endIndex) else {
+        return .invalidInnerStructure
+      }
+      
+      let innerPart = String(bban[bban.index(bban.startIndex, offsetBy: bbanOfset)..<partEndIndex])
 
       if RFIBANHelper.isStringConformFormat(innerPart, format: format) == false
       {
