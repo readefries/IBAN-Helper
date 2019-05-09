@@ -7,3 +7,5 @@ script:
  - bundle exec pod lib lint --quick
 after_success:
  - bash <(curl -s https://codecov.io/bash)
+before_install:
+ - bundle update --bundler
