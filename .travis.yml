@@ -8,5 +8,5 @@ script:
 after_success:
  - bash <(curl -s https://codecov.io/bash)
 before_install:
- - gem install -v 2.0.1 bundler --no-rdoc --no-ri
+ - gem install -v 2.0.1 bundler
  - bundle _2.0.1_ install
