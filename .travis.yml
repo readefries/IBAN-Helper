@@ -23,3 +23,4 @@ deploy:
   file: RFIBANHelper.framework.zip
   on:
     repo: TizianoCoroneo/IBAN-Helper
+    tags: true
