@@ -21,6 +21,7 @@ deploy:
   api_key:
     secure: jwLd8O8UsQyAdk4fuLqN05/hIQe7+/8qBbK+8Q8+lASf0OS1jpxdT0vTqw0xMNV2Sq1lfdqKu+y1RRJG0UrUHvH4dAke0VIuDajnZY8cjlGf1lbDMmXieJMrSiEE7pCShqI4qsXOQAaGSL6ar5HS/buXj841WLDHT8I7Srs3FQj6X6iYFY+uA4y03A9I++8P+pfdhUKCg2KoZNmbamJ+icrAF/JsWji2wWEAOGvCzkdBsxOr8d5y6IobiOHXA/2/u7qVZQiS49jkU6nMPHnvpqszhjje6Jrky8b0WCGEID8PDYd1cmO6x2B+iPkeMIzVvt+t0GIlxDICQg6wS0dqe64OoYUULiulNsJeA/BXhYK5ILf9CXFf68eNw7mvEXjGvwJ91hfoq5acCA3c1QynBGcIVgVsIjKfGaLKA+TDs0Xh9FB6wOMS4iLjlfPaSvXk82vmRHa6zmPoXTHEQV2J7iandtqacJ1ZXfxdDeF9UMqd2YN0I413CKM4lOIQQijWupF0CkMopltzUrErtt5YT6HKcuhyUAiY1MsM6b3c9E8WKhOaz2X6YFodn3gapkRc5d0MstjUoJ+ENKOHGPsV7sjcPYepmqZsvPvT4xyjGQFi7ZZF5nlw4e09c52kfT8u7+nOyl0Hngs2uCnvZ+e17nUtBC3MTAfLLpyGIY4BwyA=
   file: RFIBANHelper.framework.zip
+  skip_cleanup: true
   on:
     repo: TizianoCoroneo/IBAN-Helper
     tags: true
