@@ -9,8 +9,7 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 before_install:
-- gem install -v 2.0.1 bundler
-- bundle _2.0.1_ install
+- gem install bundler
 - brew update
 - brew outdated carthage || brew upgrade carthage
 before_deploy:
