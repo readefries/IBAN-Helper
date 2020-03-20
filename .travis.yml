@@ -4,7 +4,7 @@ cache:
 - bundler
 script:
 - xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build
-  test -destination platform='iOS Simulator,name=iPhone 7,OS=latest'
+  test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'
 - bundle exec pod lib lint --quick
 after_success:
 - bash <(curl -s https://codecov.io/bash)
