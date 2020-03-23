@@ -55,7 +55,7 @@ Add this line in your Cartfile:
 github 'readefries/IBAN-Helper' ~> 3.0
 ```
 
-This library is available on Carthage starting from version `3.0.4`.
+This library is available on Carthage starting from version `3.0.3`.
 
 ## Author
 
