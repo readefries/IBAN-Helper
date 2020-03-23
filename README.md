@@ -4,6 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![License](https://img.shields.io/cocoapods/l/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
 [![Platform](https://img.shields.io/cocoapods/p/RFIBAN-Helper.svg?style=flat)](http://cocoapods.org/pods/RFIBAN-Helper)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
 A Swift helper class to validate IBAN accounts.
@@ -26,8 +27,10 @@ The dataset used to validate the accounts, is from the [UN/CEFACT - TBG Finance 
 
 ## Installation
 
-RFIBAN-Helper is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+RFIBAN-Helper is available through [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage). 
+
+### CocoaPods
+To install it, simply add the following line to your Podfile:
 
 For Swift 4 use
 ```ruby
@@ -43,6 +46,16 @@ For Swift 2.3 use
 ```
 pod 'RFIBAN-Helper', '~> 1.0'
 ```
+
+### Carthage
+
+Add this line in your Cartfile:
+
+```
+github 'readefries/IBAN-Helper' ~> 3.0
+```
+
+This library is available on Carthage starting from version `3.0.4`.
 
 ## Author
 
