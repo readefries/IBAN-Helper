@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RFIBAN-Helper"
-  s.version          = "3.0.3"
+  s.version          = "3.0.4"
   s.summary          = "A little helper to validate if an IBAN is valid (based on the country)."
 
 # This description is used to generate tags and improve search results.
