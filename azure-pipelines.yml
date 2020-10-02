@@ -35,9 +35,6 @@ steps:
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 11'
     publishJUnitResults: true
-- task: CocoaPods@0
-  inputs:
-    forceRepoUpdate: false
 - task: Bash@3
   displayName: 'Cocoapod lint'
   inputs:
