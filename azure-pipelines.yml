@@ -34,9 +34,4 @@ steps:
     packageApp: false
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 11'
-- task: Bash@3
-  displayName: 'Post test results to CodeCov'
-  inputs:
-    script: |
-       bash <(curl -s https://codecov.io/bash)
-       
+    publishJUnitResults: true
