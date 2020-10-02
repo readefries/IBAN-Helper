@@ -27,7 +27,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'test'
-    configuration: 'Release'
+    configuration: 'Debug'
     sdk: 'iphoneos'
     xcWorkspacePath: 'Example/RFIBANHelper.xcodeproj'
     scheme: 'RFIBANHelper'
