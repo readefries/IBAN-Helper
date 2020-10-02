@@ -1,5 +1,2 @@
 source 'https://rubygems.org'
 gem 'cocoapods', '~> 1.3'
-gem 'travis', '~> 1.8'
-gem 'json', '~> 2.3'
-gem 'xcpretty', '~> 0.2'
