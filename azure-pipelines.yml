@@ -10,6 +10,10 @@ pool:
   vmImage: 'macos-latest'
 
 steps:
+- task: UseRubyVersion@0
+  displayName: 'Use specific Ruby version'
+  inputs:
+    versionSpec: '2.4.1'
 - task: Bash@3
   displayName: 'Install Bundler'
   inputs:
@@ -17,7 +21,7 @@ steps:
     script: |
       gem install -v 1.17.3 bundler
 - task: Bash@3
-  displayName: 'Install and updage carthage'
+  displayName: 'Install and update carthage'
   inputs:
     targetType: 'inline'
     script: |
