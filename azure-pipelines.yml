@@ -11,20 +11,20 @@ pool:
 
 steps:
 - task: Bash@3
+  displayName: 'Install Bundler'
   inputs:
     targetType: 'inline'
     script: |
-      # Install Bundler
-      
       gem install bundler
 - task: Bash@3
+  displayName: 'Install and updage carthage'
   inputs:
     targetType: 'inline'
     script: |
-      # Install brew
       brew update
       brew outdated carthage || brew upgrade carthage
 - task: Xcode@5
+  displayName: 'Run unit tests'
   inputs:
     actions: 'test'
     configuration: 'Debug'
@@ -34,3 +34,9 @@ steps:
     packageApp: false
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 11'
+- task: Bash@3
+  displayName: 'Post test results to CodeCov'
+  inputs:
+    script: |
+       bash <(curl -s https://codecov.io/bash)
+       
