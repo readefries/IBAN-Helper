@@ -29,6 +29,6 @@ steps:
     actions: 'test'
     scheme: 'RFIBANHelper'
     sdk: 'iphoneos'
-    configuration: 'Release'    
+    configuration: 'Release'
     xcWorkspacePath: 'Example/RFIBANHelper.xcodeproj'
     xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
