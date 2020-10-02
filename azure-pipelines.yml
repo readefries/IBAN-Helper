@@ -13,7 +13,7 @@ steps:
 - task: UseRubyVersion@0
   displayName: 'Use specific Ruby version'
   inputs:
-    versionSpec: '2.4.1'
+    versionSpec: '2.4.10'
 - task: Bash@3
   displayName: 'Install Bundler'
   inputs:
