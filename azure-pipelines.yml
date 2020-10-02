@@ -35,3 +35,16 @@ steps:
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 11'
     publishJUnitResults: true
+- task: Bash@3
+  displayName: 'Cocoapod lint'
+  inputs:
+    targetType: inline
+    script: |
+      bundle exec pod lib lint --quick
+- task: Bash@3
+  displayName: 'Build and archive for cartage'
+  inputs:
+    targetType: inline
+    script: |
+      carthage build --no-skip-current
+      carthage archive RFIBANHelper
