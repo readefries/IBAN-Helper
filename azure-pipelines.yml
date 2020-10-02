@@ -27,8 +27,10 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'test'
-    scheme: 'RFIBANHelper'
-    sdk: 'iphoneos'
     configuration: 'Release'
+    sdk: 'iphoneos'
     xcWorkspacePath: 'Example/RFIBANHelper.xcodeproj'
-    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
+    scheme: 'RFIBANHelper'
+    packageApp: false
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 11'
