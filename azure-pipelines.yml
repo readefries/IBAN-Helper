@@ -15,7 +15,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      gem install bundler
+      gem install -v 1.17.3 bundler
 - task: Bash@3
   displayName: 'Install and updage carthage'
   inputs:
