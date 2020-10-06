@@ -1,7 +1,8 @@
 .PHONY: install test
 
 install:
-	bundle install --path vendor/bundle
+	bundle config set path 'vendor/bundle'
+	bundle install
 
 clean:
 	rm -rf vendor/
