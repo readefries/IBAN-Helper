@@ -13,13 +13,13 @@ steps:
 - task: UseRubyVersion@0
   displayName: 'Use specific Ruby version'
   inputs:
-    versionSpec: '2.4.10'
+    versionSpec: '2.6.6'
 - task: Bash@3
   displayName: 'Install Bundler'
   inputs:
     targetType: 'inline'
     script: |
-      gem install bundler
+      make install
 - task: Bash@3
   displayName: 'Install and update carthage'
   inputs:

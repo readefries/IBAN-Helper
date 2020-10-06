@@ -1,6 +1,7 @@
 .PHONY: install test
 
 install:
+	gem install bundler:2.1.4
 	bundle config set path 'vendor/bundle'
 	bundle install
 
