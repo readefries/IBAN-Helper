@@ -52,3 +52,14 @@ steps:
     script: |
       carthage build --no-skip-current
       carthage archive RFIBANHelper
+- task: GitHubRelease@1
+  displayName: 'Publish to Github'
+  inputs:
+    gitHubConnection: 'github.com_readefries'
+    repositoryName: 'readefries/IBAN-Helper'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    assets: 'RFIBANHelper.framework.zip'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
