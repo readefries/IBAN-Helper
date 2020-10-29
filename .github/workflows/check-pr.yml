@@ -20,3 +20,9 @@ jobs:
         scheme: RFIBANHelper
         configuration: Debug
         destination: platform=iOS Simulator,OS=14.0,name=iPhone 11
+    - name: Perform Cocoapod lib lint validation
+      uses: readefries/cocoapod-lint-github-action@v1-beta
+      with:
+        podspec: RFIBAN-Helper.podspec
+        allow-warnings: true
+
