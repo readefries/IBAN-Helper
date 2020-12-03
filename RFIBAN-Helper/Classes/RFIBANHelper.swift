@@ -201,7 +201,15 @@ public class RFIBANHelper: NSObject {
 
   public static func ibanStructure(_ countryCode: String) -> [String: Any] {
 
-    if let path = Bundle(for: object_getClass(self)!).path(forResource: "IBANStructure", ofType: "plist") {
+    let bundle: Bundle
+
+    #if SWIFT_PACKAGE
+    bundle = .module
+    #else
+    bundle = Bundle(for: object_getClass(self)!)
+    #endif
+
+    if let path = bundle.path(forResource: "IBANStructure", ofType: "plist") {
       if let ibanStructureList = NSArray(contentsOfFile:path) as? [[String: Any]] {
         for ibanStructure in ibanStructureList {
           if ibanStructure["Country"] as? String == countryCode {
