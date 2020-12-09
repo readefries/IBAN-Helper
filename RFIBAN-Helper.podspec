@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.name             = "RFIBAN-Helper"
   s.version          = "3.0.5"
   s.summary          = "A little helper to validate if an IBAN is valid (based on the country)."
+  s.swift_version    = "5.0"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
