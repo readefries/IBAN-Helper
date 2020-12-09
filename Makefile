@@ -13,7 +13,7 @@ clean:
 	rm -rf Pods/
 
 test:
-	xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 7,OS=latest'
+	xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'
 	bundle exec pod lib lint --quick
 
 publish:
