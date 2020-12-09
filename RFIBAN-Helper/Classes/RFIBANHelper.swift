@@ -27,8 +27,10 @@ public class RFIBANHelper: NSObject {
   static let uppercaseCharacters = "^([A-Z])*$"
 
   static let startBytesRegex = "^([A-Z]{2}[0-9]{2})$"
+  static let countryModels = CountryModels()
 
   public static func createIBAN(_ account: String, bic: String? = nil, countryCode: String? = nil) -> String {
+    countryModels.loadModels()
 
     if account.count < 1
     {
@@ -44,27 +46,24 @@ public class RFIBANHelper: NSObject {
 
       let countryCode = bic[bic.index(bic.startIndex, offsetBy: 4)..<bic.index(bic.startIndex, offsetBy: 6)]
       let bankCode = bic[..<bic.index(bic.startIndex, offsetBy: 4)]
-
-      let structure = RFIBANHelper.ibanStructure(String(countryCode))
-
-      guard let requiredLength = structure["Length"] as? Int else {
-        preconditionFailure("Missing length for \(countryCode)")
+        
+      guard let countryModel = countryModels.model(String(countryCode)) else {
+        preconditionFailure("CountryModel not found for \(countryCode)")
       }
-      let accountNumber = RFIBANHelper.preFixZerosToAccount(account, length: requiredLength - 4)
+        
+      let accountNumber = RFIBANHelper.preFixZerosToAccount(account, length: countryModel.Length - 4)
 
       let ibanWithoutChecksum = "\(countryCode)00\(bankCode)\(accountNumber)"
 
-      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
+      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum)
 
       return "\(countryCode)\(checksum)\(bankCode)\(accountNumber)"
     }
 
     if let countryCode = countryCode {
-      let structure = RFIBANHelper.ibanStructure(countryCode)
-
       let ibanWithoutChecksum = "\(countryCode)00\(account)"
 
-      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum, structure: structure)
+      let checksum = RFIBANHelper.checkSumForIban(ibanWithoutChecksum)
 
       return "\(countryCode)\(checksum)\(account)"
     }
@@ -73,6 +72,8 @@ public class RFIBANHelper: NSObject {
   }
 
   public static func isValidIBAN(_ iban: String) -> IbanCheckStatus {
+    countryModels.loadModels()
+        
     if iban.range(of: RFIBANHelper.ibanStructure, options: .regularExpression) == nil
     {
       return .invalidStructure
@@ -84,11 +85,8 @@ public class RFIBANHelper: NSObject {
 
     let countryCode = iban[...iban.index(iban.startIndex, offsetBy:1)]
 
-    let structure = RFIBANHelper.ibanStructure(String(countryCode))
-
-    if structure.keys.count == 0
-    {
-      return .invalidCountryCode
+    guard let countryModel = countryModels.model(String(countryCode)) else {
+        return .invalidCountryCode
     }
 
     let startBytes = String(iban[...iban.index(iban.startIndex, offsetBy: 3)])
@@ -100,9 +98,7 @@ public class RFIBANHelper: NSObject {
     }
 
     let nf = NumberFormatter()
-    guard let innerStructure = structure["InnerStructure"] as? String else {
-      preconditionFailure("Missing Innerstructure for \(countryCode)")
-    }
+    let innerStructure = countryModel.InnerStructure
 
     var bbanOfset = 0
     let bban = iban[iban.index(iban.startIndex, offsetBy: 4)...]
@@ -136,12 +132,8 @@ public class RFIBANHelper: NSObject {
     }
 
     //  1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
-    if let expectedLength = structure["Length"] as? NSNumber
-    {
-      if expectedLength.intValue != iban.count
-      {
-        return .invalidLength
-      }
+    if countryModel.Length != iban.count {
+      return .invalidLength
     }
 
     let checksumString = iban[iban.index(iban.startIndex, offsetBy: 2)..<iban.index(iban.startIndex, offsetBy: 4)]
@@ -150,7 +142,7 @@ public class RFIBANHelper: NSObject {
       return .invalidChecksum
     }
 
-    if expectedCheckSum.intValue == RFIBANHelper.checkSumForIban(iban, structure:structure)
+    if expectedCheckSum.intValue == RFIBANHelper.checkSumForIban(iban)
     {
       return .validIban
     }
@@ -199,30 +191,7 @@ public class RFIBANHelper: NSObject {
     }
   }
 
-  public static func ibanStructure(_ countryCode: String) -> [String: Any] {
-
-    let bundle: Bundle
-
-    #if SWIFT_PACKAGE
-    bundle = .module
-    #else
-    bundle = Bundle(for: object_getClass(self)!)
-    #endif
-
-    if let path = bundle.path(forResource: "IBANStructure", ofType: "plist") {
-      if let ibanStructureList = NSArray(contentsOfFile:path) as? [[String: Any]] {
-        for ibanStructure in ibanStructureList {
-          if ibanStructure["Country"] as? String == countryCode {
-            return ibanStructure
-          }
-        }
-      }
-    }
-
-    return [:]
-  }
-
-  public static func checkSumForIban(_ iban: String, structure: [String: Any]) -> Int {
+  public static func checkSumForIban(_ iban: String) -> Int {
     //  2. Replace the two check digits by 00 (e.g., GB00 for the UK).
     //  3. Move the four initial characters to the end of the string.
     let bankCode = iban[iban.index(iban.startIndex, offsetBy: 4)...]
