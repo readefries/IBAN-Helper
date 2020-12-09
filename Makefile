@@ -5,6 +5,9 @@ install:
 	bundle config set path 'vendor/bundle'
 	bundle install
 
+import:
+	./import.php
+
 clean:
 	rm -rf vendor/
 	rm -rf Pods/
