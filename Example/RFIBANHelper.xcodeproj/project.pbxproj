@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1725A67D2580BE6600BBEEB9 /* IBANStructure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1725A67C2580BE6600BBEEB9 /* IBANStructure.json */; };
 		B142B7A51CD28CED006E3F2A /* RFIBANHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = B142B7A41CD28CED006E3F2A /* RFIBANHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B142B7AC1CD28D08006E3F2A /* RFIBANHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B6C2F1CC77F3C00D4BDD7 /* RFIBANHelper.swift */; };
 		B142B7AD1CD28D08006E3F2A /* ISO7064.swift in Sources */ = {isa = PBXBuildFile; fileRef = B142B79B1CCE2207006E3F2A /* ISO7064.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1725A67C2580BE6600BBEEB9 /* IBANStructure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IBANStructure.json; path = "../RFIBAN-Helper/Assets/IBANStructure.json"; sourceTree = "<group>"; };
 		3BDB832E132342916FBA400B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* RFIBANHelper_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RFIBANHelper_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				B142B7991CCDF14E006E3F2A /* IBANStructure.plist */,
+				1725A67C2580BE6600BBEEB9 /* IBANStructure.json */,
 				B16B6C2F1CC77F3C00D4BDD7 /* RFIBANHelper.swift */,
 				B142B79B1CCE2207006E3F2A /* ISO7064.swift */,
 			);
@@ -232,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B142B7AE1CD28D13006E3F2A /* IBANStructure.plist in Resources */,
+				1725A67D2580BE6600BBEEB9 /* IBANStructure.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
