@@ -1,3 +1,12 @@
+# 4.0.0
+
+* Updated code to Swift 5.0
+* Updated dataset to support more different countries. 72 Countries are currently supported.
+
+# 3.0.0
+
+* Updated code to Swift 4.0
+
 # 2.0.0
 
 * Updated code to Swift 3.0
