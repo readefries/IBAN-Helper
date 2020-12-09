@@ -32,6 +32,11 @@ RFIBAN-Helper is available through [CocoaPods](http://cocoapods.org) and [Cartha
 ### CocoaPods
 To install it, simply add the following line to your Podfile:
 
+For Swift 5 use
+```ruby
+pod 'RFIBAN-Helper', '~> 4.0'
+```
+
 For Swift 4 use
 ```ruby
 pod 'RFIBAN-Helper', '~> 3.0'
@@ -52,14 +57,14 @@ pod 'RFIBAN-Helper', '~> 1.0'
 Add this line in your Cartfile:
 
 ```
-github 'readefries/IBAN-Helper' ~> 3.0
+github 'readefries/IBAN-Helper' ~> 4.0
 ```
 
 This library is available on Carthage starting from version `3.0.3`.
 
 ## Author
 
-Hindrik Bruinsma, de@readefries.nl
+Hindrik Bruinsma, hbruinsma@xs4some.nl
 
 ## License
 
