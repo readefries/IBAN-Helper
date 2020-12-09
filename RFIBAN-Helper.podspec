@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.author           = { "Hindrik Bruinsma" => "de@readefries.nl" }
   s.source           = { :git => "https://github.com/readefries/IBAN-Helper.git", :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'RFIBAN-Helper/Classes/**/*'
   s.resources = 'RFIBAN-Helper/Assets/IBANStructure.plist'
