@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = "https://github.com/readefries/IBAN-Helper"
   s.license          = 'MIT'
-  s.author           = { "Hindrik Bruinsma" => "de@readefries.nl" }
+  s.author           = { "Hindrik Bruinsma" => "hbruinsma@xs4some.nl" }
   s.source           = { :git => "https://github.com/readefries/IBAN-Helper.git", :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
