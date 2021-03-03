@@ -43,7 +43,7 @@ extension Bundle {
         #if SWIFT_PACKAGE
         bundle = .module
         #else
-        bundle = Bundle(for: object_getClass(self)!)
+        bundle = Bundle(for: object_getClass(CountryModels.self)!)
         #endif
 
         return bundle
