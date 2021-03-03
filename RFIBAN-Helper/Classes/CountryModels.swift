@@ -13,7 +13,7 @@ public class CountryModels {
     
     public func loadModels() {
         do {
-            guard let jsonPath = Bundle(for: object_getClass(self)!).path(forResource: "IBANStructure", ofType: "json")
+            guard let jsonPath = Bundle.assets.path(forResource: "IBANStructure", ofType: "json")
                   else {
                 preconditionFailure("Unable to read IBANStructure.json")
             }
@@ -34,4 +34,18 @@ public class CountryModels {
     public func model(_ countryCode: String) -> CountryModel? {
         return models[countryCode]
     }
+}
+
+extension Bundle {
+    static let assets: Bundle = {
+        let bundle: Bundle
+
+        #if SWIFT_PACKAGE
+        bundle = .module
+        #else
+        bundle = Bundle(for: object_getClass(self)!)
+        #endif
+
+        return bundle
+    }()
 }
