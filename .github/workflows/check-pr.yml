@@ -27,7 +27,7 @@ jobs:
   release:
     needs: build
     runs-on: macos-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
