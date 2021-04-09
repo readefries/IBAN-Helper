@@ -13,6 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true      
     - name: Xcode Test
       uses: devbotsxyz/xcode-test@v1.1.0
       with:
@@ -21,8 +24,5 @@ jobs:
         configuration: Debug
         destination: platform=iOS Simulator,OS=latest,name=iPhone 11
     - name: Perform Cocoapod lib lint validation
-      uses: readefries/cocoapod-lint-github-action@v1-beta
-      with:
-        podspec: RFIBAN-Helper.podspec
-        allow-warnings: true
+      run: make validate
 

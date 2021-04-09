@@ -14,6 +14,8 @@ clean:
 
 test:
 	xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'
+
+validate:
 	bundle exec pod lib lint --quick
 
 publish:
