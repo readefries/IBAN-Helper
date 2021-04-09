@@ -25,4 +25,8 @@ jobs:
         destination: platform=iOS Simulator,OS=latest,name=iPhone 11
     - name: Perform Cocoapod lib lint validation
       run: make validate
-
+    - name: Push update to Cocoapods when merging to main
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+      run: make publish
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
