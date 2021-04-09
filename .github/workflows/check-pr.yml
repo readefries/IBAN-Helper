@@ -1,8 +1,6 @@
-name: Swift
+name: Check PR
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -23,29 +21,3 @@ jobs:
         destination: platform=iOS Simulator,OS=latest,name=iPhone 11
     - name: Perform Cocoapod lib lint validation
       run: make validate
-
-  release:
-    needs: build
-    runs-on: macos-latest
-    if: github.event.pull_request.merged == true
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true      
-      - name: Install Node dependencies
-        run: npm install
-      - name: Bump version
-        run: podspec-bump -w
-      - name: Commit changes
-        run: >
-          git add RFIBAN-Helper.podspec
-          git commit -m 'Bump to version `podspec-bump --dump-version`'
-      - name: Tag latest commit
-        run: >
-          git tag `podspec-bump --dump-version`
-          git push origin `podspec-bump --dump-version`
-      - name: Push update to Cocoapods when merging to main        
-        run: make publish
-        env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
