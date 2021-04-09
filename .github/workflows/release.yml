@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-   release:
+  release:
     if: github.event.pull_request.merged == true
     runs-on: macos-latest    
     steps:
