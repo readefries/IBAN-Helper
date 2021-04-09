@@ -1,8 +1,6 @@
 name: Release an update to Cocoapods
 
 on:
-  push:
-    branches: [ main ]    
   pull_request:
     types: [ closed ]
     branches: [ main ]
