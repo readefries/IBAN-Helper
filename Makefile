@@ -16,7 +16,7 @@ test:
 	xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'
 
 validate:
-	bundle exec pod lib lint --quick
+	bundle exec pod lib lint --quick --allow-warnings
 
 publish:
-	bundle exec pod trunk push RFIBAN-Helper.podspec
+	bundle exec pod trunk push RFIBAN-Helper.podspec --allow-warnings
