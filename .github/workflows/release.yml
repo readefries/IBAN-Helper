@@ -20,15 +20,16 @@ jobs:
       - name: Install Node dependencies
         run: npm install
       - name: Bump version
-        run: podspec-bump -w
+        run: node_modules/.bin/podspec-bump -w
       - name: Commit changes
         run: >
+          export SPEC_VERSION=`node_modules/.bin/podspec-bump --dump-version`
           git add RFIBAN-Helper.podspec
-          git commit -m 'Bump to version `podspec-bump --dump-version`'
+          git commit -m "Bump to version $SPEC_VERSION"
       - name: Tag latest commit
         run: >
-          git tag `podspec-bump --dump-version`
-          git push origin `podspec-bump --dump-version`
+          git tag $SPEC_VERSION
+          git push origin $SPEC_VERSION
       - name: Push update to Cocoapods when merging to main        
         run: make publish
         env:
