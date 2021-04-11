@@ -25,6 +25,7 @@ jobs:
           git commit -m "Bump to version $SPEC_VERSION"
       - name: Tag latest commit
         run: |
+          export SPEC_VERSION=`node_modules/.bin/podspec-bump --dump-version`
           git tag $SPEC_VERSION
           git push origin $SPEC_VERSION
       - name: Push update to Cocoapods when merging to main        
