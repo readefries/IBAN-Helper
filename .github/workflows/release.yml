@@ -14,9 +14,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true      
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true      
       - name: Install Node dependencies
         run: npm install
       - name: Bump version
