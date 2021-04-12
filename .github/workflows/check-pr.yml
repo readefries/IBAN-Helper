@@ -21,3 +21,5 @@ jobs:
         destination: platform=iOS Simulator,OS=latest,name=iPhone 11
     - name: Perform Cocoapod lib lint validation
       run: make validate
+    - uses: codecov/codecov-action@v1
+      name: Determine code coverage with CodeCov
