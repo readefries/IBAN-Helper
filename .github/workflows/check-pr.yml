@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  PROJECT_FILE: "Example/RFIBANHelper.xcodeproj"
+  PROJECT_SCHEME: "RFIBANHelper"
+
 jobs:
   build:
     runs-on: macos-latest
@@ -15,8 +19,8 @@ jobs:
     - name: Xcode Test
       uses: devbotsxyz/xcode-test@v1.1.0
       with:
-        project: Example/RFIBANHelper.xcodeproj
-        scheme: RFIBANHelper
+        project: ${{ env.PROJECT_FILE }}
+        scheme: ${{ env.PROJECT_SCHEME }}
         configuration: Debug
         destination: platform=iOS Simulator,OS=latest,name=iPhone 11
     - name: Perform Cocoapod lib lint validation
