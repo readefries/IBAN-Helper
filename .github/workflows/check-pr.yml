@@ -11,7 +11,23 @@ env:
 jobs:
   build:
     runs-on: macos-latest
+
+    strategy:
+      matrix: 
+        xcode:
+          - destination: platform=iOS Simulator,OS=latest,name=iPhone 11
+            version : latest-stable
+          - destination: platform=iOS Simulator,OS=14.4,name=iPhone 11
+            version: 12.4
+          - destination: platform=iOS Simulator,OS=13.7,name=iPhone 11
+            version: 11.7
+          - destination: platform=iOS Simulator,OS=12.4,name=iPhone 7
+            version: 10.3
+
     steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: ${{ matrix.xcode.version }}
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
@@ -22,7 +38,7 @@ jobs:
         project: ${{ env.PROJECT_FILE }}
         scheme: ${{ env.PROJECT_SCHEME }}
         configuration: Debug
-        destination: platform=iOS Simulator,OS=latest,name=iPhone 11
+        destination: ${{ matrix.xcode.destination }}
     - name: Perform Cocoapod lib lint validation
       run: make validate
     - uses: codecov/codecov-action@v1
