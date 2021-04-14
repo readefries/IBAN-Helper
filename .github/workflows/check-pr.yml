@@ -39,6 +39,8 @@ jobs:
         scheme: ${{ env.PROJECT_SCHEME }}
         configuration: Debug
         destination: ${{ matrix.xcode.destination }}
+    - name: Set phony version so Podspec linting will work
+      run: sed -i "" -e 's|<LIB_VERSION>|1.1.1|g' RFIBAN-Helper.podspec
     - name: Perform Cocoapod lib lint validation
       run: make validate
     - uses: codecov/codecov-action@v1
