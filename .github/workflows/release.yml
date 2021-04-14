@@ -16,19 +16,15 @@ jobs:
           bundler-cache: true      
       - name: Install Node dependencies
         run: npm install
-      - name: Bump version
-        run: node_modules/.bin/podspec-bump -w
-      - name: Commit changes
-        run: |
-          export SPEC_VERSION=`node_modules/.bin/podspec-bump --dump-version`
-          git add RFIBAN-Helper.podspec
-          git commit -m "Bump to version $SPEC_VERSION"
-      - name: Tag latest commit
-        run: |
-          export SPEC_VERSION=`node_modules/.bin/podspec-bump --dump-version`
-          git tag $SPEC_VERSION
-          git push origin $SPEC_VERSION
+      - name: Bump version and push tag
+        id: version_bump
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+      - name: Sed new version in Podspec
+        run: sed -i "" -e 's|<LIB_VERSION>|${{ version_bump.new_tag }}|g' RFIBAN-Helper.podspec
       - name: Push update to Cocoapods when merging to main        
-        run: make publish
+        run: exec pod trunk push RFIBAN-Helper.podspec --allow-warnings
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
