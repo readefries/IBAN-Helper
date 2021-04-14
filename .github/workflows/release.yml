@@ -20,7 +20,7 @@ jobs:
         with:
           tag_prefix: ''
         env:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
+         github_token: ${{ secrets.PAT_TO_BUMP_TAG }}
       - name: Sed new version in Podspec
         run: sed -i "" -e 's|<LIB_VERSION>|${{ steps.version_bump.outputs.new_tag }}|g' RFIBAN-Helper.podspec
       - name: Push update to Cocoapods when merging to main
