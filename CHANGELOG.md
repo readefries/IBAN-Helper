@@ -1,33 +1,14 @@
-# 4.0.0
+# Changelog
 
-* Updated code to Swift 5.0
-* Updated dataset to support more different countries. 72 Countries are currently supported.
+## [4.1.0](https://www.github.com/readefries/IBAN-Helper/compare/v4.0.2...v4.1.0) (2021-04-21)
 
-# 3.0.0
 
-* Updated code to Swift 4.0
+### Features
 
-# 2.0.0
+* spm support ([ef4d7bb](https://www.github.com/readefries/IBAN-Helper/commit/ef4d7bb597e1afdac2ed7acf5dbddf835da57c4f))
 
-* Updated code to Swift 3.0
 
-# 1.0.3
+### Bug Fixes
 
-* Added more test to increase code coverage
-* Fixed issue which caused inner BBAN structure not to be tested properly
-* Updated code to Swift 2.3
-
-# 1.0.2
-
-* Added code coverage checking
-
-# 1.0.1
-
-* Added more test cases
-* Fixed some travis issues 
-
-# 1.0.0
-
-* Inial Swift rebuild from my previous Objective-C verion.
-* Added travis support
-* Added library to Cocoapods
+* fixed a crash when using SPM ([3cd15ca](https://www.github.com/readefries/IBAN-Helper/commit/3cd15ca2c2fb22f876b7738a3707de9f183f5770))
+* fixed an issue where the json models would not load correctly when not using spm ([e7b921d](https://www.github.com/readefries/IBAN-Helper/commit/e7b921d15b95e3e648f35724aa92a2e16f2c5483))
