@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RFIBAN-Helper"
-  s.version          = "<LIB_VERSION>"
+  s.version          = "4.0.2"
   s.summary          = "A little helper to validate if an IBAN is valid (based on the country)."
   s.swift_version    = "5.0"
 
