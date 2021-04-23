@@ -23,7 +23,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Sed new version in Podspec
-        run: sed -i "" -e 's|${{ steps.version_bump.outputs.previous_tag }}|${{ steps.version_bump.outputs.new_tag }}|g' RFIBAN-Helper.podspec
+        run: sed -i "" -e 's|<LIB_VERSION>|${{ steps.version_bump.outputs.new_tag }}|g' RFIBAN-Helper.podspec
 
       - name: Commit updated Podspec
         uses: EndBug/add-and-commit@v7
