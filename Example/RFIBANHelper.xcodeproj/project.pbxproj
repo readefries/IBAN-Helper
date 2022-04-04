@@ -10,10 +10,12 @@
 		1725A675257F949600BBEEB9 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1725A674257F949600BBEEB9 /* CountryModel.swift */; };
 		1725A679257FAB8300BBEEB9 /* CountryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1725A678257FAB8300BBEEB9 /* CountryModels.swift */; };
 		1725A67D2580BE6600BBEEB9 /* IBANStructure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1725A67C2580BE6600BBEEB9 /* IBANStructure.json */; };
+		3B5BE3DC27FB30CA00EFE797 /* CountryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5BE3DB27FB30CA00EFE797 /* CountryTests.swift */; };
 		B142B7A51CD28CED006E3F2A /* RFIBANHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = B142B7A41CD28CED006E3F2A /* RFIBANHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B142B7AC1CD28D08006E3F2A /* RFIBANHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B6C2F1CC77F3C00D4BDD7 /* RFIBANHelper.swift */; };
 		B142B7AD1CD28D08006E3F2A /* ISO7064.swift in Sources */ = {isa = PBXBuildFile; fileRef = B142B79B1CCE2207006E3F2A /* ISO7064.swift */; };
 		B142B7AF1CD28D57006E3F2A /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		B3FE22BD22BEFA0398D449AA /* Pods_RFIBANHelper_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C41AF5B2DADF605573C043 /* Pods_RFIBANHelper_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,6 +32,7 @@
 		1725A674257F949600BBEEB9 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CountryModel.swift; path = "../RFIBAN-Helper/Classes/CountryModel.swift"; sourceTree = "<group>"; };
 		1725A678257FAB8300BBEEB9 /* CountryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CountryModels.swift; path = "../RFIBAN-Helper/Classes/CountryModels.swift"; sourceTree = "<group>"; };
 		1725A67C2580BE6600BBEEB9 /* IBANStructure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IBANStructure.json; path = "../RFIBAN-Helper/Assets/IBANStructure.json"; sourceTree = "<group>"; };
+		3B5BE3DB27FB30CA00EFE797 /* CountryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTests.swift; sourceTree = "<group>"; };
 		3BDB832E132342916FBA400B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* RFIBANHelper_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RFIBANHelper_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -42,6 +45,9 @@
 		B142B7A61CD28CED006E3F2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B16B6C2F1CC77F3C00D4BDD7 /* RFIBANHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RFIBANHelper.swift; path = "../RFIBAN-Helper/Classes/RFIBANHelper.swift"; sourceTree = "<group>"; };
 		B192EE541E26101000032A89 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		BD54AEB6174E446FF6D2C186 /* Pods-RFIBANHelper_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RFIBANHelper_Tests.release.xcconfig"; path = "Target Support Files/Pods-RFIBANHelper_Tests/Pods-RFIBANHelper_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		C2C41AF5B2DADF605573C043 /* Pods_RFIBANHelper_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RFIBANHelper_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB7288780AA1849724B6C1B3 /* Pods-RFIBANHelper_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RFIBANHelper_Tests.debug.xcconfig"; path = "Target Support Files/Pods-RFIBANHelper_Tests/Pods-RFIBANHelper_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBBBF1F8E37D1ACCE5A67C55 /* RFIBAN-Helper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "RFIBAN-Helper.podspec"; path = "../RFIBAN-Helper.podspec"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3FE22BD22BEFA0398D449AA /* Pods_RFIBANHelper_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +79,8 @@
 				607FACE81AFB9204008FA782 /* Tests */,
 				B142B7A31CD28CED006E3F2A /* RFIBANHelper */,
 				607FACD11AFB9204008FA782 /* Products */,
+				A3850D9F701C883FFA584AD4 /* Pods */,
+				6D3335CB0945B460FE98F214 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				3B5BE3DB27FB30CA00EFE797 /* CountryTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -110,6 +120,23 @@
 				3BDB832E132342916FBA400B /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		6D3335CB0945B460FE98F214 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C2C41AF5B2DADF605573C043 /* Pods_RFIBANHelper_Tests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3850D9F701C883FFA584AD4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EB7288780AA1849724B6C1B3 /* Pods-RFIBANHelper_Tests.debug.xcconfig */,
+				BD54AEB6174E446FF6D2C186 /* Pods-RFIBANHelper_Tests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		B142B7A31CD28CED006E3F2A /* RFIBANHelper */ = {
@@ -151,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "RFIBANHelper_Tests" */;
 			buildPhases = (
+				C5067E4AC0264644ADEFC8C7 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
+				8F23EEC3488E77EACD60CA1B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -243,11 +272,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8F23EEC3488E77EACD60CA1B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RFIBANHelper_Tests/Pods-RFIBANHelper_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RFIBAN-Helper/RFIBAN_Helper.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RFIBAN_Helper.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RFIBANHelper_Tests/Pods-RFIBANHelper_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5067E4AC0264644ADEFC8C7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RFIBANHelper_Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		607FACE11AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5BE3DC27FB30CA00EFE797 /* CountryTests.swift in Sources */,
 				B142B7AF1CD28D57006E3F2A /* Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,6 +455,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB7288780AA1849724B6C1B3 /* Pods-RFIBANHelper_Tests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = V8T47KEK9L;
@@ -405,6 +479,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD54AEB6174E446FF6D2C186 /* Pods-RFIBANHelper_Tests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = V8T47KEK9L;
