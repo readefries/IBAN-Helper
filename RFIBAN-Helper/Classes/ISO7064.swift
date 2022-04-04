@@ -17,7 +17,7 @@ public class ISO7064: NSObject {
 
       let chunk = Int(remainingInput[remainingInput.startIndex..<remainingInput.index(remainingInput.startIndex, offsetBy: chunkSize)])
 
-      if chunk! < 97 || remainingInput.count < 3 {
+      if remainingInput.count < 3 {
         break
       }
 
