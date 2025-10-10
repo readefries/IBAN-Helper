@@ -66,6 +66,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
       - name: Check Dependency Ages
         run: |
           echo "📊 Dependency Freshness Analysis" > freshness_report.md
@@ -73,10 +78,10 @@ jobs:
           echo "" >> freshness_report.md
 
           # Check CocoaPods dependencies
-          if [ -f "Podfile" ]; then
+          if [ -f "Example/Podfile" ]; then
             echo "## CocoaPods Dependencies" >> freshness_report.md
             echo "\`\`\`" >> freshness_report.md
-            bundle exec pod outdated >> freshness_report.md 2>/dev/null || echo "No outdated pods" >> freshness_report.md
+            cd Example && bundle exec pod outdated >> ../freshness_report.md 2>/dev/null || echo "No outdated pods" >> ../freshness_report.md && cd ..
             echo "\`\`\`" >> freshness_report.md
           fi
 
