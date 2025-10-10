@@ -266,7 +266,7 @@ public final class IBANValidator: IBANValidating, IBANCreating, IBANFormatting {
         return 98 - remainder
     }
 
-    private func convertToNumeric(_ string: String) -> String {
+    internal func convertToNumeric(_ string: String) -> String {
         var result = ""
 
         for char in string {

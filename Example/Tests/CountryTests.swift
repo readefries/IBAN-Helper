@@ -30,7 +30,7 @@ final class CountrySpecificIBANTests: XCTestCase {
             "BH": "BH02CITI00001077181611",
             "BE": "BE45096920886089",
             "BA": "BA391011606058553319",
-            "BR": "BR0200000000010670000117668C1",
+            "BR": "BR9700360305000010009795493P1",
             "VG": "VG48NOSC0000000005002993",
             "BG": "BG02RZBB91551002755190",
             "CR": "CR79015202220005614288",
@@ -208,6 +208,51 @@ final class CountrySpecificIBANTests: XCTestCase {
                     _ = RFIBANHelper.isValidIBAN(iban)
                 }
             }
+        }
+    }
+
+    // MARK: - Specific Issue Tests
+
+    func testProblematicBrazilianIBAN() {
+        // This IBAN was reported as failing validation but should be valid
+        let problematicIBAN = "BR0200000000010670000117668C1"
+
+        let result = RFIBANHelper.isValidIBAN(problematicIBAN)
+        XCTAssertEqual(result, .validIban, "Brazilian IBAN \(problematicIBAN) should be valid")
+
+        // Test length
+        XCTAssertEqual(problematicIBAN.count, 29, "Brazilian IBAN should be 29 characters")
+
+        // Test structure
+        let countryCode = String(problematicIBAN.prefix(2))
+        XCTAssertEqual(countryCode, "BR", "Should be Brazilian IBAN")
+
+        let bban = String(problematicIBAN.dropFirst(4))
+        XCTAssertEqual(bban.count, 25, "Brazilian BBAN should be 25 characters")
+    }
+
+    func testAsyncProblematicBrazilianIBAN() async {
+        let problematicIBAN = "BR0200000000010670000117668C1"
+
+        let result = await validator.validate(problematicIBAN)
+
+        switch result {
+        case .success:
+            XCTAssert(true, "Brazilian IBAN should pass async validation")
+        case .failure(let error):
+            XCTFail("Brazilian IBAN failed async validation with error: \(error)")
+        }
+    }
+
+    func testMultipleBrazilianIBANs() {
+        let brazilianIBANs = [
+            "BR9700360305000010009795493P1",  // Known working
+            "BR0200000000010670000117668C1",  // Reported as failing
+        ]
+
+        for iban in brazilianIBANs {
+            let result = RFIBANHelper.isValidIBAN(iban)
+            XCTAssertEqual(result, .validIban, "Brazilian IBAN should be valid: \(iban)")
         }
     }
 }
