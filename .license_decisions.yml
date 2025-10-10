@@ -1,0 +1,46 @@
+# License decisions for RFIBAN-Helper
+
+# Approved licenses
+- - :approve
+  - MIT
+  - :who: GitHub Workflows
+    :why: MIT license is compatible with our project
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z
+
+- - :approve
+  - Apache-2.0
+  - :who: GitHub Workflows
+    :why: Apache 2.0 license is compatible with our project
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z
+
+- - :approve
+  - BSD-2-Clause
+  - :who: GitHub Workflows
+    :why: BSD-2-Clause license is compatible with our project
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z
+
+- - :approve
+  - BSD-3-Clause
+  - :who: GitHub Workflows
+    :why: BSD-3-Clause license is compatible with our project
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z
+
+- - :approve
+  - ISC
+  - :who: GitHub Workflows
+    :why: ISC license is compatible with our project
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z
+
+# Project license
+- - :license
+  - RFIBAN-Helper
+  - MIT
+  - :who: Project Owner
+    :why: This is our project license
+    :versions: []
+    :when: 2024-10-10T00:00:00.000Z

@@ -1,0 +1,187 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PROJECT_FILE: Example/RFIBANHelper.xcodeproj
+  PROJECT_SCHEME: RFIBANHelper
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict
+        continue-on-error: true
+
+  test-ios:
+    name: Test iOS
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        destination:
+          - platform=iOS Simulator,name=iPhone 16 Pro,OS=18.6
+          - platform=iOS Simulator,name=iPhone 16,OS=18.4
+          - platform=iOS Simulator,name=iPad Pro 13-inch (M4),OS=18.6
+          - platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.5
+        xcode: ["16.0"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          working-directory: ./
+
+      - name: Setup Xcode 16
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ matrix.xcode }}
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd Example
+          pod install --repo-update
+
+      - name: Run iOS Tests
+        run: |
+          xcodebuild test \
+            -workspace Example/RFIBANHelper.xcworkspace \
+            -scheme RFIBANHelper \
+            -destination "${{ matrix.destination }}" \
+            -configuration Debug \
+            -enableCodeCoverage YES \
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./DerivedData/Build/ProfileData/*/Coverage.profdata
+          fail_ci_if_error: false
+          verbose: true
+
+  test-spm:
+    name: Test Swift Package Manager
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
+      - name: Test with SPM
+        run: |
+          swift test --enable-code-coverage
+
+      - name: Generate code coverage report
+        run: |
+          xcrun llvm-cov export -format="lcov" \
+            .build/debug/RFIBANHelperPackageTests.xctest/Contents/MacOS/RFIBANHelperPackageTests \
+            -instr-profile .build/debug/codecov/default.profdata > coverage.lcov
+        continue-on-error: true
+
+      - name: Upload SPM Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.lcov
+          fail_ci_if_error: false
+          verbose: true
+
+  validate-cocoapods:
+    name: Validate CocoaPods
+    runs-on: macos-14
+    needs: [test-ios, test-spm]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Validate Podspec
+        run: |
+          bundle exec pod lib lint RFIBAN-Helper.podspec \
+            --quick \
+            --allow-warnings \
+            --verbose
+
+  check-documentation:
+    name: Check Documentation
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
+      - name: Check DocC Documentation
+        run: |
+          xcodebuild docbuild \
+            -scheme RFIBANHelper \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro"
+        continue-on-error: true
+
+  security-audit:
+    name: Security Audit
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Bundle Audit
+        run: |
+          bundle install
+          bundle exec bundle-audit check --update
+        continue-on-error: true
+
+      - name: CocoaPods Security Audit
+        run: |
+          cd Example
+          bundle exec pod install
+          # Check for known vulnerabilities in dependencies
+          bundle exec pod audit
+        continue-on-error: true

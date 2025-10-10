@@ -1,0 +1,134 @@
+name: 🐛 Bug Report
+description: Report a bug to help us improve RFIBAN-Helper
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us reproduce and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Call method '...'
+        3. Pass IBAN '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A clear and concise description of what actually happened.
+      placeholder: What actually happened?
+    validations:
+      required: true
+
+  - type: input
+    id: iban
+    attributes:
+      label: IBAN in Question
+      description: The specific IBAN that's causing issues (if applicable)
+      placeholder: e.g., GB82WEST12345698765432
+    validations:
+      required: false
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Which platform are you using?
+      options:
+        - iOS
+        - macOS
+        - Swift Package Manager
+        - CocoaPods
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: RFIBAN-Helper Version
+      description: Which version of RFIBAN-Helper are you using?
+      placeholder: e.g., 4.0.6
+    validations:
+      required: true
+
+  - type: input
+    id: ios-version
+    attributes:
+      label: iOS/macOS Version
+      description: Which iOS or macOS version are you targeting?
+      placeholder: e.g., iOS 17.0, macOS 14.0
+    validations:
+      required: false
+
+  - type: input
+    id: xcode-version
+    attributes:
+      label: Xcode Version
+      description: Which Xcode version are you using?
+      placeholder: e.g., 15.1
+    validations:
+      required: false
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Sample
+      description: Provide a minimal code sample that reproduces the issue
+      render: swift
+      placeholder: |
+        import RFIBANHelper
+
+        let iban = "YOUR_IBAN_HERE"
+        let result = RFIBANHelper.isValidIBAN(iban)
+        // Expected: .validIban
+        // Actual: .invalidStructure
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Please copy and paste any relevant log output
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+    validations:
+      required: false

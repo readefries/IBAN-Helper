@@ -9,7 +9,7 @@ RFIBAN-Helper is a Swift library for validating International Bank Account Numbe
 ## Development Commands
 
 ### Testing
-- **Run all tests**: `make test` or `xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'`
+- **Run all tests**: `make test` or `xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 16,OS=latest'`
 - Tests are located in `Example/Tests/`
 
 ### CocoaPods Operations

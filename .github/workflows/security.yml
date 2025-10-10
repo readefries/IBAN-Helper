@@ -1,0 +1,156 @@
+name: Security
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Weekly on Monday at 8 AM
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: macos-14
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause
+
+  ruby-security-audit:
+    name: Ruby Security Audit
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install bundler-audit
+        run: gem install bundler-audit
+
+      - name: Update vulnerability database
+        run: bundle audit --update
+
+      - name: Run security audit
+        run: bundle audit --verbose
+
+  cocoapods-security:
+    name: CocoaPods Security
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd Example
+          bundle exec pod install
+
+      - name: Check for known vulnerabilities
+        run: |
+          cd Example
+          # CocoaPods doesn't have a built-in audit command yet
+          # but we can check for outdated dependencies
+          bundle exec pod outdated
+        continue-on-error: true
+
+  swift-security:
+    name: Swift Security Analysis
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
+      - name: Run Swift static analysis
+        run: |
+          # Run static analyzer
+          xcodebuild analyze \
+            -scheme RFIBANHelper \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Check for sensitive data patterns
+        run: |
+          # Check for potential secrets or sensitive patterns
+          echo "Checking for potential security issues..."
+
+          # Look for potential hardcoded secrets (basic patterns)
+          if grep -r -i -E "(password|secret|key|token|api)" --include="*.swift" --include="*.m" --include="*.h" RFIBAN-Helper/; then
+            echo "⚠️ Found potential sensitive data patterns. Please review."
+          else
+            echo "✅ No obvious sensitive data patterns found."
+          fi
+
+          # Check for TODO/FIXME comments that might indicate security issues
+          if grep -r -i -E "(TODO|FIXME).*(security|auth|password)" --include="*.swift" --include="*.m" --include="*.h" RFIBAN-Helper/; then
+            echo "⚠️ Found security-related TODO/FIXME comments."
+          else
+            echo "✅ No security-related TODO/FIXME comments found."
+          fi
+
+  license-compliance:
+    name: License Compliance
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install license finder
+        run: gem install license_finder
+
+      - name: Check licenses
+        run: |
+          cd Example
+          bundle exec pod install
+          license_finder --decisions-file=../.license_decisions.yml
+        continue-on-error: true
+
+  github-security:
+    name: GitHub Security
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run GitHub Security Analysis
+        uses: github/super-linter@v5
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_SWIFT: true
+          VALIDATE_RUBY: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true

@@ -1,49 +1,257 @@
-name: Release an update to Cocoapods
+name: Release
 
 on:
   push:
-    # types: [ closed ]
-    branches: [ main ]
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 4.0.7)'
+        required: true
+        type: string
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_15.1.app/Contents/Developer
 
 jobs:
-  release:
-    # if: github.event.pull_request.merged == true
-    runs-on: macos-latest
+  validate-release:
+    name: Validate Release
+    runs-on: macos-14
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      should_release: ${{ steps.check.outputs.should_release }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version to release: $VERSION"
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            echo "Expected format: X.Y.Z (e.g., 4.0.7)"
+            exit 1
+          fi
+          echo "✅ Version format is valid: $VERSION"
+
+      - name: Check if this is a new version
+        id: check
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
+          # Check if tag already exists
+          if git tag --list | grep -q "^$VERSION$"; then
+            echo "⚠️ Tag $VERSION already exists"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ New version $VERSION"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          fi
+
+  build-and-test:
+    name: Build and Test
+    runs-on: macos-14
+    needs: validate-release
+    if: needs.validate-release.outputs.should_release == 'true'
+    strategy:
+      matrix:
+        destination:
+          - platform=iOS Simulator,name=iPhone 16 Pro,OS=18.6
+          - platform=iOS Simulator,name=iPad Pro 13-inch (M4),OS=18.6
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
+      - name: Install dependencies
+        run: |
+          cd Example
+          pod install --repo-update
+
+      - name: Run Tests
+        run: |
+          xcodebuild test \
+            -workspace Example/RFIBANHelper.xcworkspace \
+            -scheme RFIBANHelper \
+            -destination "${{ matrix.destination }}" \
+            -configuration Release \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Test Swift Package Manager
+        run: swift test
+
+  update-podspec:
+    name: Update Podspec
+    runs-on: macos-14
+    needs: [validate-release, build-and-test]
+    if: needs.validate-release.outputs.should_release == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Update version in podspec
+        run: |
+          VERSION="${{ needs.validate-release.outputs.version }}"
+          echo "Updating podspec to version $VERSION"
+
+          # Update version in podspec
+          sed -i "" "s/s.version.*=.*/s.version = \"$VERSION\"/" RFIBAN-Helper.podspec
+
+          # Verify the change
+          grep "s.version" RFIBAN-Helper.podspec
+
+      - name: Validate updated podspec
+        run: |
+          bundle exec pod lib lint RFIBAN-Helper.podspec \
+            --quick \
+            --allow-warnings \
+            --verbose
+
+      - name: Commit updated podspec
+        run: |
+          VERSION="${{ needs.validate-release.outputs.version }}"
+
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add RFIBAN-Helper.podspec
+            git commit -m "[Auto] update Podspec with version $VERSION"
+            git push
+          fi
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: macos-14
+    needs: [validate-release, build-and-test, update-podspec]
+    if: needs.validate-release.outputs.should_release == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.validate-release.outputs.version }}"
+
+          # Get the previous tag
+          PREV_TAG=$(git tag --sort=-version:refname | head -2 | tail -1)
+
+          if [[ -z "$PREV_TAG" ]]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          echo "Generating changelog from $PREV_TAG to HEAD"
+
+          # Generate changelog
+          CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD --no-merges)
+
+          if [[ -z "$CHANGELOG" ]]; then
+            CHANGELOG="- Initial release"
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.validate-release.outputs.version }}
+          name: Release ${{ needs.validate-release.outputs.version }}
+          body: |
+            ## What's Changed
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Installation
+
+            ### CocoaPods
+            ```ruby
+            pod 'RFIBAN-Helper', '~> ${{ needs.validate-release.outputs.version }}'
+            ```
+
+            ### Swift Package Manager
+            ```swift
+            dependencies: [
+                .package(url: "https://github.com/readefries/IBAN-Helper.git", from: "${{ needs.validate-release.outputs.version }}")
+            ]
+            ```
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-cocoapods:
+    name: Publish to CocoaPods
+    runs-on: macos-14
+    needs: [validate-release, build-and-test, update-podspec, create-release]
+    if: needs.validate-release.outputs.should_release == 'true'
+    environment: cocoapods-release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           ref: main
 
-      - uses: ruby/setup-ruby@v1
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Determine version number
-        id: version_bump
-        uses: mathieudutour/github-tag-action@v5.5
-        with:
-          dry_run: true
-          tag_prefix: ''
-          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Sed new version in Podspec
-        run: sed -i "" -e 's|<LIB_VERSION>|${{ steps.version_bump.outputs.new_tag }}|g' RFIBAN-Helper.podspec
-          
-      - name: Commit updated Podspec
-        uses: swinton/commit@v2.x
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            RFIBAN-Helper.podspec
-          commit-message: '[Auto] update Podspec with version ${{ steps.version_bump.outputs.new_tag }}'
+      - name: Pull latest changes
+        run: git pull origin main
 
-      - name: Actualy tag latest commit
-        uses: mathieudutour/github-tag-action@v5.5
-        with:
-          tag_prefix: ''
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push update to Cocoapods when merging to main
-        run: exec pod trunk push RFIBAN-Helper.podspec --allow-warnings
+      - name: Publish to CocoaPods Trunk
+        run: |
+          echo "Publishing to CocoaPods Trunk..."
+          bundle exec pod trunk push RFIBAN-Helper.podspec \
+            --allow-warnings \
+            --verbose
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+
+      - name: Verify publication
+        run: |
+          VERSION="${{ needs.validate-release.outputs.version }}"
+          echo "Waiting for version to be available..."
+          sleep 30
+
+          # Check if the version is available
+          pod search RFIBAN-Helper | grep "$VERSION" || echo "Version may take time to propagate"

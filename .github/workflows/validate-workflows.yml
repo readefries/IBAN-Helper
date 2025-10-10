@@ -1,0 +1,60 @@
+name: Validate Workflows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  validate:
+    name: Validate Workflow Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate YAML syntax
+        run: |
+          echo "Validating workflow YAML files..."
+          for file in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$file" ]; then
+              echo "Validating $file"
+              python -c "import yaml; yaml.safe_load(open('$file'))"
+              echo "✅ $file is valid"
+            fi
+          done
+
+      - name: Check for required secrets documentation
+        run: |
+          echo "Checking for required secrets..."
+
+          if grep -r "CODECOV_TOKEN" .github/workflows/; then
+            echo "⚠️ CODECOV_TOKEN secret is required for code coverage"
+          fi
+
+          if grep -r "COCOAPODS_TRUNK_TOKEN" .github/workflows/; then
+            echo "⚠️ COCOAPODS_TRUNK_TOKEN secret is required for CocoaPods publishing"
+          fi
+
+      - name: Check workflow best practices
+        run: |
+          echo "Checking workflow best practices..."
+
+          # Check for pinned action versions
+          if grep -r "uses:.*@main" .github/workflows/; then
+            echo "⚠️ Found actions using @main instead of pinned versions"
+          fi
+
+          if grep -r "uses:.*@master" .github/workflows/; then
+            echo "⚠️ Found actions using @master instead of pinned versions"
+          fi
+
+          # Check for checkout action without version
+          if grep -r "uses: actions/checkout$" .github/workflows/; then
+            echo "⚠️ Found checkout action without version specified"
+          fi
+
+          echo "✅ Workflow validation complete"
