@@ -44,6 +44,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push update to Cocoapods when merging to main
-        run: exec pod trunk push RFIBAN-Helper.podspec --allow-warnings
+        run: make publish
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
