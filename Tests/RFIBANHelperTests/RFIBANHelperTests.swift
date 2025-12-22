@@ -3,6 +3,14 @@ import Testing
 
 @testable import RFIBANHelper
 
+@Test func Issue42() async throws {
+    let sut = "BR0200000000010670000117668C1"
+    
+    let result = RFIBANHelper.isValidIBAN(sut)
+
+    #expect(result == .validIban, "\(sut) should be a valid IBAN, yet the result is \(result)")
+}
+
 @Test func testReplacingCharactersWithDigits() async throws {
     let sut = "GB82WEST12345698765432"
 
