@@ -8,10 +8,14 @@
 
 import Foundation
 
-public class CountryModels {
+public struct CountryModels: Sendable {
     private var models = [String: CountryModel]()
     
-    public func loadModels() {
+    public init() {
+        loadModels()
+    }
+    
+    public mutating func loadModels() {
         do {
             guard let jsonPath = Bundle.assets.path(forResource: "IBANStructure", ofType: "json")
                   else {

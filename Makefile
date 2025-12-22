@@ -6,14 +6,14 @@ install:
 	bundle install
 
 import:
-	./import.php
+	./import.sh
 
 clean:
 	rm -rf vendor/
 	rm -rf Pods/
 
 test:
-	xcodebuild test -project Example/RFIBANHelper.xcodeproj -scheme RFIBANHelper build test -destination platform='iOS Simulator,name=iPhone 11,OS=latest'
+	swift build && swift test
 
 validate:
 	bundle exec pod lib lint --quick --allow-warnings
