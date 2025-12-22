@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CountryModel: Codable {
+public struct CountryModel: Codable, Sendable {
     public var CountryCode: String
     public var Length: Int
     public var InnerStructure: String

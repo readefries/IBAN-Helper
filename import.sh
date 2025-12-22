@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 IN_FILE='iban-countries.json'
-OUT_FILE='RFIBAN-Helper/Assets/IBANStructure.json'
+OUT_FILE='Sources/RFIBANHelper/IBANStructure.json'
 
 if [ ! -f "$IN_FILE" ]; then
 echo "Unable to read file $IN_FILE"

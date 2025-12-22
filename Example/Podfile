@@ -1,6 +1,0 @@
-use_frameworks!
-
-
-target 'RFIBANHelper_Tests' do
-  pod 'RFIBAN-Helper', :path => '../'
-end

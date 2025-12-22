@@ -30,8 +30,6 @@ public class RFIBANHelper: NSObject {
   static let countryModels = CountryModels()
 
   public static func createIBAN(_ account: String, bic: String? = nil, countryCode: String? = nil) -> String {
-    countryModels.loadModels()
-
     if account.count < 1
     {
       return ""
@@ -72,7 +70,6 @@ public class RFIBANHelper: NSObject {
   }
 
   public static func isValidIBAN(_ iban: String) -> IbanCheckStatus {
-    countryModels.loadModels()
         
     if iban.range(of: RFIBANHelper.ibanStructure, options: .regularExpression) == nil
     {
@@ -219,7 +216,7 @@ public class RFIBANHelper: NSObject {
       return ""
     }
 
-    let returnValue = NSMutableString()
+    let returnValue = NSMutableString(capacity: string.count * 2)
 
     for charValue in string.unicodeScalars {
 
