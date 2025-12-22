@@ -7,10 +7,10 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "RFIBAN-Helper"
-  s.version          = "4.0.8"
-  s.summary          = "A little helper to validate if an IBAN is valid (based on the country)."
-  s.swift_version    = "5.0"
+  s.name             = 'RFIBAN-Helper'
+  s.version          = '4.0.8'
+  s.summary          = 'A little helper to validate if an IBAN is valid (based on the country).'
+  s.swift_version    = '5.0'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -26,13 +26,13 @@ Pod::Spec.new do |s|
                        
                        DESC
 
-  s.homepage         = "https://github.com/readefries/IBAN-Helper"
-  s.license          = 'MIT'
-  s.author           = { "Hindrik Bruinsma" => "hbruinsma@xs4some.nl" }
-  s.source           = { :git => "https://github.com/readefries/IBAN-Helper.git", :tag => s.version.to_s }
+  s.homepage         = 'https://github.com/readefries/IBAN-Helper'
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.author           = { 'Hendrik Bruinsma' => 'hbruinsma@xs4some.nl' }
+  s.source           = { :git => 'https://github.com/readefries/IBAN-Helper.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '12.0'
 
   s.source_files = 'Sources/RFIBANHelper/**/*.swift'
-  s.resources = 'Sources/RFIBANHelper/IBANStructure.json'
+  s.resources = 'Sources/RFIBANHelper/IBANStructure.json', 'LICENSE'
 end
